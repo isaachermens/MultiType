@@ -1,0 +1,17 @@
+﻿<Window x:Class="TypingGame.ClientConnect"
+        WindowStartupLocation="CenterScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Connect to a Host" Height="300" Width="300"
+        ResizeMode="CanMinimize">
+    <Grid>
+        <Label Content="IP Address:"></Label>
+        <TextBox PreviewTextInput="IP_PreviewTextInput" HorizontalAlignment="Left" Height="23" Margin="84,4,0,0" TextWrapping="Wrap" Text="{Binding IPAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="186"/>
+        <Label Content="Port Number:" HorizontalAlignment="Left" Margin="0,37,0,0" VerticalAlignment="Top"/>
+        <TextBox PreviewTextInput="Port_PreviewTextInput" HorizontalAlignment="Left" Height="23" Margin="84,40,0,0" TextWrapping="Wrap" Text="{Binding PortNumber, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="186"/>
+        <Button Name="ConnectBtn" Content="Connect" HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="75" Click="Connect_Click"/>
+        <Button Name="CancelBtn" Content="Cancel" Margin="195,229,0,0" VerticalAlignment="Top" Click="Cancel_Click" HorizontalAlignment="Left" Width="75"/>
+        <CheckBox Name="ConnectionEstablished" Visibility="Hidden" Content="" IsChecked="{Binding ConnectionEstablished}" HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Checked="ConnectionEstablished_Checked"/>
+        <TextBlock Foreground="Red" HorizontalAlignment="Left" Margin="10,68,0,0" TextWrapping="Wrap" Text="{Binding InputError}" VerticalAlignment="Top" Height="156" Width="260"/>
+    </Grid>
+</Window>

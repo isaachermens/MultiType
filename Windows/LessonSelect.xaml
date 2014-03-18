@@ -1,0 +1,58 @@
+﻿<Window x:Class="TypingGame.LessonSelect"
+        WindowStartupLocation="CenterScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lesson Selection" Height="600" Width="850" MinWidth="800" MinHeight="550"
+        ResizeMode="CanResize">
+    <Grid>
+        <Button Name="Menu" Content="Main Menu" Margin="0,10,21,0" VerticalAlignment="Top" Click="Cancel_Click" Height="22" HorizontalAlignment="Right" Width="75"/>
+        <Grid Name="LessonContentGrid">
+            <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="168" ItemsSource="{Binding LessonNames}" SelectedIndex="{Binding SelectedLessonIndex}" Height="22" />
+            <Button Name="CreateLessonBtn" Content="Create New Lesson" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Width="110" Click="CreateNew_Click"/>
+            <Button Name="Choose" Content="Begin" HorizontalAlignment="Left" Margin="667,10,0,0" VerticalAlignment="Top" Width="66" Click="Choose_Click" Height="22"/>
+            <Button Name="EditBtn" Content="Edit Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="298,10,0,0" VerticalAlignment="Top" Width="74" Click="EditBtn_Click"/>
+            <Button Name="DeleteBtn" Content="Delete Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="377,10,0,0" VerticalAlignment="Top" Width="84" Click="DeleteBtn_Click"/>
+            <Grid>
+                <ScrollViewer  VerticalScrollBarVisibility="Auto" Margin="20,54,30,45">
+                    <TextBlock Text="{Binding LessonString}" TextWrapping="Wrap"/>
+                </ScrollViewer>
+                <Label Name="RacerSpeed" Content="Racer Speed:" HorizontalAlignment="Left" Margin="465,6,0,0" VerticalAlignment="Top"/>
+                <ComboBox Name="RacerSpeeds" HorizontalAlignment="Left" Margin="548,10,0,0" ItemsSource="{Binding RacerSpeeds}" SelectedIndex="{Binding RacerIndex}" VerticalAlignment="Top" Width="97"/>
+            </Grid>
+        </Grid>
+        <Grid Name="LessonEntryGrid" Visibility="Collapsed">
+            <ScrollViewer Name="LessonEntryScroll" VerticalScrollBarVisibility="Auto" Margin="20,54,30,45">
+                <TextBox Name="LessonEntry" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+            </ScrollViewer>
+            <TextBox Name="LessonName" Margin="109,0,0,10" HorizontalAlignment="Left" Width="128" Height="30" VerticalAlignment="Bottom"/>
+            <Label Content="Lesson Name:" HorizontalAlignment="Left" Margin="20,0,0,14" Height="26" VerticalAlignment="Bottom"/>
+            <Button Content="Save" HorizontalAlignment="Left" Margin="251,0,0,14" Width="75" Click="Save_Click" Height="22" VerticalAlignment="Bottom"/>
+            <Button Content="Cancel" HorizontalAlignment="Left" Margin="349,0,0,14" Width="76" Click="CancelAdd_Click" Height="22" VerticalAlignment="Bottom"/>
+            <TextBlock Text="{Binding EntryErrorText}" Margin="30,0,162,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="47"/>
+        </Grid>
+        <Grid Name="LessonEditGrid" Visibility="Collapsed">
+            <ScrollViewer Name="LessonEditScroll" VerticalScrollBarVisibility="Auto" Margin="20,54,30,50">
+                <TextBox Name="LessonEdit" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+            </ScrollViewer>
+            <TextBox Name="LessonNameEdit" Text="{Binding LessonNameEdit, UpdateSourceTrigger=PropertyChanged}" Margin="109,0,0,10" HorizontalAlignment="Left" Width="128" Height="35" VerticalAlignment="Bottom"/>
+            <Label Content="Lesson Name:" HorizontalAlignment="Left" Margin="20,0,0,19" Height="26" VerticalAlignment="Bottom"/>
+            <Button Content="Save" HorizontalAlignment="Left" Margin="256,0,0,21" Width="75" Click="SaveEdit_Click" Height="22" VerticalAlignment="Bottom"/>
+            <Button Content="Cancel" HorizontalAlignment="Left" Margin="352,0,0,21" Width="76" Click="CancelEdit_Click" Height="22" VerticalAlignment="Bottom"/>
+            <TextBlock Text="{Binding EditErrorText}" Margin="30,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" HorizontalAlignment="Left" Width="600"/>
+        </Grid>
+        
+        <Popup Name="PendingConnection" IsOpen="{Binding ShowPopup}" Placement="Center" Margin="246,185" Grid.RowSpan="2">
+            <Border BorderBrush="White" BorderThickness="3,3,0,0">
+                <Border BorderBrush="Black" BorderThickness="1,1,3,3">
+                    <StackPanel Background="Honeydew">
+                        <Label FontSize="20" Content="{Binding IPAddress}" ></Label>
+                        <Label FontSize="20" Content="{Binding PortNum}" ></Label>
+                        <Label FontSize="20" Content="Waiting for a user to connect..." />
+                    </StackPanel>
+                </Border>
+            </Border>
+        </Popup>
+        <CheckBox Name="ConnectionEstablished" Visibility="Hidden" Content="" IsChecked="{Binding ConnectionEstablished}" HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Checked="ConnectionEstablished_Checked" Height="16" Width="17"/>
+        
+    </Grid>
+</Window>
