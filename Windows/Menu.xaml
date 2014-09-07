@@ -2,7 +2,7 @@
         x:Class="MultiType.Menu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Type4Life" Height="250" Width="250"
+        Title="MultiType" Height="250" Width="250"
         ResizeMode="NoResize">
         
     <Grid>

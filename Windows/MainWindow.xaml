@@ -4,7 +4,7 @@
         xmlns:my="clr-namespace:MultiType.ViewModels"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Title="Type4Life" Height="650" Width="1000" KeyDown="Window_KeyDown_1" MinWidth="975" MinHeight="500"
+        Title="MultiType" Height="650" Width="1000" KeyDown="Window_KeyDown_1" MinWidth="975" MinHeight="500"
         Loaded="Window_Loaded">
     <Grid Width="Auto" Height="Auto">
         <Rectangle Fill="#FFF4F4F5" Height="104" Margin="8,10,12,0" Stroke="Black" VerticalAlignment="Top" Panel.ZIndex="-1"/>
