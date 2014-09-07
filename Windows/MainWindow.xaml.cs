@@ -13,11 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TypingGame.ViewModels;
+using MultiType.ViewModels;
 using System.Drawing;
 using System.Windows.Controls.Primitives;
 
-namespace TypingGame
+namespace MultiType
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -119,14 +119,14 @@ namespace TypingGame
 					completeWindow.Close();
                     App.Current.Shutdown();
 				}
-				else if (completeWindow.Result == TypingGame.Resources.DialogResult.Repeat)
+				else if (completeWindow.Result == MultiType.Resources.DialogResult.Repeat)
 				{
 					completeWindow.Close();
 					_viewModel.RepeatLesson();
 					OpenStartGameDialog();
 					return;
 				}
-				else if (completeWindow.Result == TypingGame.Resources.DialogResult.New)
+				else if (completeWindow.Result == MultiType.Resources.DialogResult.New)
 				{
 					completeWindow.Close();
 					var window = new MiniLessonSelect();

@@ -6,15 +6,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
-using TypingGame.ViewModels;
-using TypingGame.Resources;
+using MultiType.Resources;
+using MultiType.ViewModels;
 using System.Net.Sockets;
 using System.Net;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows;
 
-namespace TypingGame.Models
+namespace MultiType.Models
 {
 	internal class PrimaryModel
 	{

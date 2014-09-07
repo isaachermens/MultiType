@@ -11,9 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TypingGame.ViewModels;
+using MultiType.ViewModels;
 
-namespace TypingGame
+namespace MultiType
 {
 	/// <summary>
 	/// Interaction logic for ClientConnect.xaml

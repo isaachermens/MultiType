@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypingGame.Models;
+using MultiType.Models;
 using System.Net;
 using System.ComponentModel;
 
-namespace TypingGame.ViewModels
+namespace MultiType.ViewModels
 {
 	class ConnectViewModel: INotifyPropertyChanged
 	{

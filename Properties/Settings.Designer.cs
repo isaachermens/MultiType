@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TypingGame.Properties
+namespace MultiType.Properties
 {
 
 

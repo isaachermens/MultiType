@@ -10,12 +10,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Controls;
-using TypingGame.Models;
+using MultiType.Models;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Documents;
 
-namespace TypingGame.ViewModels
+namespace MultiType.ViewModels
 {
     class PrimaryViewModel : INotifyPropertyChanged
 	{

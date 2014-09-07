@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TypingGame.Resources
+namespace MultiType.Resources
 {
 	class BadLessonEntryException: Exception
 	{

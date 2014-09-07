@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-namespace TypingGame.Resources
+namespace MultiType.Resources
 {
 	public class Serializer
 	{

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace TypingGame
+namespace MultiType
 {
 
 	/// <summary>
@@ -35,12 +35,12 @@ namespace TypingGame
 			var btn = (Button)sender;
 			if (btn.Name == "Repeat")
 			{
-				Result = TypingGame.Resources.DialogResult.Repeat;
+				Result = MultiType.Resources.DialogResult.Repeat;
 				DialogResult = true;
 			}
 			else if (btn.Name == "SelectNew")
 			{
-				Result = TypingGame.Resources.DialogResult.New;
+				Result = MultiType.Resources.DialogResult.New;
 				DialogResult = true;
 			}
 			else

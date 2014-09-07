@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypingGame.Models;
+using MultiType.Models;
 
-namespace TypingGame.ViewModels
+namespace MultiType.ViewModels
 {
 	class LessonViewModel: INotifyPropertyChanged
 	{

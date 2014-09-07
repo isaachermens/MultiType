@@ -1,4 +1,4 @@
-﻿<Window x:Class="TypingGame.MiniLessonSelect"
+﻿<Window x:Class="MultiType.MiniLessonSelect"
         WindowStartupLocation="CenterScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

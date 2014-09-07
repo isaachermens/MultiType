@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypingGame.ViewModels;
+using MultiType.ViewModels;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Text.RegularExpressions;
 
-namespace TypingGame.Models
+namespace MultiType.Models
 {
 	class LessonModel
 	{

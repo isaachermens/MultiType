@@ -11,10 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TypingGame.ViewModels;
+using MultiType.ViewModels;
 using System.Net.Sockets;
 
-namespace TypingGame
+namespace MultiType
 {
 	/// <summary>
 	/// Interaction logic for LessonSelect.xaml

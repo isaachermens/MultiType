@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TypingGame.ViewModels;
+using MultiType.Resources;
+using MultiType.ViewModels;
 using System.Net;
 using System.Net.Sockets;
-using TypingGame.Resources;
 
-namespace TypingGame.Models
+namespace MultiType.Models
 {
 	class ConnectModel
 	{

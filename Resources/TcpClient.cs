@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using TypingGame.Models;
-using TypingGame.ViewModels;
+using MultiType.Models;
+using MultiType.ViewModels;
 
-namespace TypingGame.Resources
+namespace MultiType.Resources
 {
 	internal class AsyncTcpClient
 	{
