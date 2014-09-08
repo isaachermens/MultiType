@@ -57,9 +57,8 @@ namespace MultiType
 
 		private void Cancel_Click(object sender, RoutedEventArgs e)
 		{
-			var menu = new Menu();
-			menu.Show();
-			this.Close();
+		    DialogResult = true;
+			Close();
 		}
 
 		private void ConnectionEstablished_Checked(object sender, RoutedEventArgs e)
