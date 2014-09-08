@@ -25,7 +25,8 @@ namespace MultiType.ViewModels
 		private string _lessonNameEdit;
 		private string _editErrorText;
 		private string[] _racerSpeeds;
-		private int _racerIndex;
+        private int _racerIndex;
+        private string _lessonName;
 
 		#endregion
 
@@ -137,6 +138,8 @@ namespace MultiType.ViewModels
 				NotifyPropertyChanged("LessonNames");
 			}
 		}
+        public string LessonName { get { return _lessonName; } set { _lessonName = value; NotifyPropertyChanged("LessonName"); } }
+
 		public string LessonString
 		{
 			get { return _lessonString; }
@@ -186,12 +189,12 @@ namespace MultiType.ViewModels
 			_model.OpenListenSocket();
 		}
 
-		internal bool CreateNewLesson(string lessonName, string lessonText)
+		internal bool CreateNewLesson(string lessonText)
 		{
 			try
 			{
-				_model.CreateNewLesson(lessonName, lessonText);
-				var index = Array.IndexOf(LessonNames, lessonName, 0);
+				_model.CreateNewLesson(LessonName, lessonText);
+                var index = Array.IndexOf(LessonNames, LessonName, 0);
 				if(index!=-1)
 					SelectedLessonIndex = index.ToString();
 				return true;
@@ -203,7 +206,7 @@ namespace MultiType.ViewModels
 			}
 		}
 
-		internal bool EditLesson(string newLessonName, string newLessonText)
+	    internal bool EditLesson(string newLessonName, string newLessonText)
 		{
 			try{
 				_model.EditLesson(LessonNames[_selectedIndex], newLessonName, newLessonText);
