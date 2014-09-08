@@ -37,6 +37,10 @@
     <ApplicationIcon>audio-keyboard %281%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PropertyChanged">
+      <HintPath>packages\PropertyChanged.Fody.1.48.4\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -56,7 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\LambdaCommand.cs" />
     <Compile Include="Exceptions\BadLessonEntryException.cs" />
+    <Compile Include="ViewModels\MenuVm.cs" />
     <Compile Include="Windows\LessonComplete.xaml.cs">
       <DependentUpon>LessonComplete.xaml</DependentUpon>
     </Compile>
@@ -67,7 +73,7 @@
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="SocketsAPI\TcpClient.cs" />
     <Compile Include="SocketsAPI\TransferClasses.cs" />
-    <Compile Include="ViewModels\ConnectViewModel.cs" />
+    <Compile Include="ViewModels\ConnectVm.cs" />
     <Compile Include="Windows\ClientConnect.xaml.cs">
       <DependentUpon>ClientConnect.xaml</DependentUpon>
     </Compile>
@@ -78,8 +84,8 @@
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\LessonModel.cs" />
-    <Compile Include="ViewModels\LessonViewModel.cs" />
-    <Compile Include="ViewModels\PrimaryViewModel.cs" />
+    <Compile Include="ViewModels\LessonVm.cs" />
+    <Compile Include="ViewModels\PrimaryVm.cs" />
     <Page Include="Resources\RoundedButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -136,6 +142,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -151,8 +158,17 @@
   <ItemGroup>
     <Resource Include="audio-keyboard %281%29.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Fody.1.25.0\build\Fody.targets" Condition="Exists('packages\Fody.1.25.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Fody.1.25.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.1.25.0\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
