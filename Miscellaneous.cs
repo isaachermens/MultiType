@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiType.SocketsAPI
+namespace MultiType.Miscellaneous
 {
 
 	/// <summary>
