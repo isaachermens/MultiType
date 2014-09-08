@@ -95,7 +95,7 @@ namespace MultiType.Models
 			else if (IsInvalidFileName(lessonName)) // if the lesson name contains any illegal characters, modify error string
 				errorString += "Please enter a file name that does not contain illegal characters: ";
 			if (errorString != "") // throw BadLessonEntryException if the error string has been modified
-				throw new Resources.BadLessonEntryException(errorString);
+				throw new Exceptions.BadLessonEntryException(errorString);
 			if (!Directory.Exists(_folderPath)) // create the lessons directory in the same directory as the executible if it does not already exist
 				Directory.CreateDirectory(_folderPath);
 			var fullPath = _folderPath + lessonName + ".txt";
@@ -127,7 +127,7 @@ namespace MultiType.Models
 			else if (IsInvalidFileName(newName))
 				errorString += "Please enter a file name that does not contain illegal characters: ";
 			if (errorString != "")
-				throw new Resources.BadLessonEntryException(errorString);
+				throw new Exceptions.BadLessonEntryException(errorString);
 
 			var fullPath = _folderPath + oldName + ".txt";
 			if (!Directory.Exists(_folderPath))
@@ -191,7 +191,7 @@ namespace MultiType.Models
 		{
 			var listener = (TcpListener)ar.AsyncState; // cast the result to a TcpListener
 			var client = listener.EndAcceptTcpClient(ar); // stop listening for clients
-			_viewModel.asyncClient = new Resources.AsyncTcpClient(client); // create an asynchronous tcp socket using the tcp client socket.
+			_viewModel.asyncClient = new SocketsAPI.AsyncTcpClient(client); // create an asynchronous tcp socket using the tcp client socket.
 			listener.Stop(); // kill the listener
 			tcpClientConnected.Set(); // set the data bound
 			_viewModel.ConnectionEstablished = true;

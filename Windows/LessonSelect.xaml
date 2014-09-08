@@ -4,14 +4,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Lesson Selection" Height="600" Width="850" MinWidth="800" MinHeight="550"
         ResizeMode="CanResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\RoundedButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        <Button Name="Menu" Content="Main Menu" Margin="0,10,21,0" VerticalAlignment="Top" Click="Cancel_Click" Height="22" HorizontalAlignment="Right" Width="75"/>
+        <Button Name="Menu" Content="Main Menu" Margin="0,10,21,0" VerticalAlignment="Top" Click="Cancel_Click" Height="22" HorizontalAlignment="Right" Width="75" Style="{DynamicResource RoundedButton}"/>
         <Grid Name="LessonContentGrid">
             <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="168" ItemsSource="{Binding LessonNames}" SelectedIndex="{Binding SelectedLessonIndex}" Height="22" />
-            <Button Name="CreateLessonBtn" Content="Create New Lesson" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Width="110" Click="CreateNew_Click"/>
-            <Button Name="Choose" Content="Begin" HorizontalAlignment="Left" Margin="667,10,0,0" VerticalAlignment="Top" Width="66" Click="Choose_Click" Height="22"/>
-            <Button Name="EditBtn" Content="Edit Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="298,10,0,0" VerticalAlignment="Top" Width="74" Click="EditBtn_Click"/>
-            <Button Name="DeleteBtn" Content="Delete Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="377,10,0,0" VerticalAlignment="Top" Width="84" Click="DeleteBtn_Click"/>
+            <Button Name="CreateLessonBtn" Content="Create New Lesson" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Width="110" Click="CreateNew_Click" Style="{DynamicResource RoundedButton}"/>
+            <Button Name="Choose" Content="Begin" HorizontalAlignment="Left" Margin="667,10,0,0" VerticalAlignment="Top" Width="66" Click="Choose_Click" Height="22" Style="{DynamicResource RoundedButton}"/>
+            <Button Name="EditBtn" Content="Edit Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="298,10,0,0" VerticalAlignment="Top" Width="74" Click="EditBtn_Click" Style="{DynamicResource RoundedButton}"/>
+            <Button Name="DeleteBtn" Content="Delete Lesson" IsEnabled="{Binding AllowEdit}" HorizontalAlignment="Left" Margin="377,10,0,0" VerticalAlignment="Top" Width="84" Click="DeleteBtn_Click" Style="{DynamicResource RoundedButton}"/>
             <Grid>
                 <ScrollViewer  VerticalScrollBarVisibility="Auto" Margin="20,54,30,45">
                     <TextBlock Text="{Binding LessonString}" TextWrapping="Wrap"/>

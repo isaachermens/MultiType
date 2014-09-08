@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Exceptions\BadLessonEntryException.cs" />
     <Compile Include="Windows\LessonComplete.xaml.cs">
       <DependentUpon>LessonComplete.xaml</DependentUpon>
     </Compile>
@@ -63,9 +64,9 @@
       <DependentUpon>MiniLessonSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ConnectModel.cs" />
-    <Compile Include="Resources\Miscellaneous.cs" />
-    <Compile Include="Resources\TcpClient.cs" />
-    <Compile Include="Resources\TransferClasses.cs" />
+    <Compile Include="Miscellaneous.cs" />
+    <Compile Include="SocketsAPI\TcpClient.cs" />
+    <Compile Include="SocketsAPI\TransferClasses.cs" />
     <Compile Include="ViewModels\ConnectViewModel.cs" />
     <Compile Include="Windows\ClientConnect.xaml.cs">
       <DependentUpon>ClientConnect.xaml</DependentUpon>
@@ -79,6 +80,10 @@
     <Compile Include="Models\LessonModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\PrimaryViewModel.cs" />
+    <Page Include="Resources\RoundedButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\LessonComplete.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +151,7 @@
   <ItemGroup>
     <Resource Include="audio-keyboard %281%29.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

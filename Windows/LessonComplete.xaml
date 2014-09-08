@@ -3,9 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Lesson Complete" Height="150" Width="400"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="..\Resources\RoundedButton.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        <Button Name="Repeat" Content="Repeat Lesson" HorizontalAlignment="Left" Margin="19,48,0,0" VerticalAlignment="Top" Width="99" Click="Btn_Click"/>
-        <Button Name="SelectNew" Content="Select New Lesson" HorizontalAlignment="Left" Margin="135,48,0,0" VerticalAlignment="Top" Width="111" Click="Btn_Click"/>
-        <Button Name="Quit" Content="Quit" HorizontalAlignment="Left" Margin="262,48,0,0" VerticalAlignment="Top" Width="100" Click="Btn_Click"/>
+        <Button Name="Repeat" Content="Repeat Lesson" HorizontalAlignment="Left" Margin="19,48,0,0" VerticalAlignment="Top" Width="99" Click="Btn_Click" Style="{DynamicResource RoundedButton}"/>
+        <Button Name="SelectNew" Content="Select New Lesson" HorizontalAlignment="Left" Margin="135,48,0,0" VerticalAlignment="Top" Width="111" Click="Btn_Click" Style="{DynamicResource RoundedButton}"/>
+        <Button Name="Quit" Content="Quit" HorizontalAlignment="Left" Margin="262,48,0,0" VerticalAlignment="Top" Width="100" Click="Btn_Click" Style="{DynamicResource RoundedButton}"/>
     </Grid>
 </Window>

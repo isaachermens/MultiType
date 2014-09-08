@@ -20,7 +20,7 @@ namespace MultiType
 	/// </summary>
 	public partial class LessonComplete : Window
 	{
-		internal Resources.DialogResult Result { get; set; }
+		internal SocketsAPI.DialogResult Result { get; set; }
 
 		public LessonComplete()
 		{
@@ -35,12 +35,12 @@ namespace MultiType
 			var btn = (Button)sender;
 			if (btn.Name == "Repeat")
 			{
-				Result = MultiType.Resources.DialogResult.Repeat;
+				Result = MultiType.SocketsAPI.DialogResult.Repeat;
 				DialogResult = true;
 			}
 			else if (btn.Name == "SelectNew")
 			{
-				Result = MultiType.Resources.DialogResult.New;
+				Result = MultiType.SocketsAPI.DialogResult.New;
 				DialogResult = true;
 			}
 			else

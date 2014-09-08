@@ -4,6 +4,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Choose Next Lesson" Height="600" Width="800"
         ResizeMode="NoResize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\RoundedButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid Name="LessonContentGrid">
             <ComboBox HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" Width="179" ItemsSource="{Binding LessonNames}" SelectedIndex="{Binding SelectedLessonIndex}" Height="22" RenderTransformOrigin="0.5,0.5" >
@@ -16,7 +23,7 @@
                     </TransformGroup>
                 </ComboBox.RenderTransform>
             </ComboBox>
-            <Button Name="Choose" Content="Choose Lesson" HorizontalAlignment="Left" Margin="674,10,0,0" VerticalAlignment="Top" Width="91" Click="Choose_Click" Height="22"/>
+            <Button Name="Choose" Content="Choose Lesson" HorizontalAlignment="Left" Margin="674,10,0,0" VerticalAlignment="Top" Width="91" Click="Choose_Click" Height="22" Style="{DynamicResource RoundedButton}"/>
             <Grid>
                 <ScrollViewer  VerticalScrollBarVisibility="Auto" Margin="20,54,32,10">
                     <TextBlock TextWrapping="Wrap" Text="{Binding LessonString}"/>

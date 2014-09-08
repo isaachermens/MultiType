@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
-using MultiType.Resources;
+using MultiType.SocketsAPI;
 using MultiType.ViewModels;
 using System.Net.Sockets;
 using System.Net;

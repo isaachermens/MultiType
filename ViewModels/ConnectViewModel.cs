@@ -16,7 +16,7 @@ namespace MultiType.ViewModels
 		private string _portNumber;
 		private bool _connectionEstablished;
 		private string _inputError;
-		internal Resources.AsyncTcpClient asyncSocket;
+		internal SocketsAPI.AsyncTcpClient asyncSocket;
 
 		public string InputError
 		{

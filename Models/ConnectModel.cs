@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MultiType.Resources;
+using MultiType.SocketsAPI;
 using MultiType.ViewModels;
 using System.Net;
 using System.Net.Sockets;

@@ -240,7 +240,7 @@ namespace MultiType.ViewModels
 
 		#endregion
 
-        public PrimaryViewModel(string lessonString, RichTextBox userInput, Resources.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
+        public PrimaryViewModel(string lessonString, RichTextBox userInput, SocketsAPI.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
         {
 			if (socket == null)
 			{

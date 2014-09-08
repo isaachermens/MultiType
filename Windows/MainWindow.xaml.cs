@@ -43,7 +43,7 @@ namespace MultiType
 			UserInput.Focus();
 		}
 
-        internal MainWindow(Resources.AsyncTcpClient socket, string lessonString, bool isServer = false)
+        internal MainWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
         {
 			InitializeComponent();
 			this.DataContext = new PrimaryViewModel(lessonString, UserInput, socket, isServer );
@@ -119,14 +119,14 @@ namespace MultiType
 					completeWindow.Close();
                     App.Current.Shutdown();
 				}
-				else if (completeWindow.Result == MultiType.Resources.DialogResult.Repeat)
+				else if (completeWindow.Result == MultiType.SocketsAPI.DialogResult.Repeat)
 				{
 					completeWindow.Close();
 					_viewModel.RepeatLesson();
 					OpenStartGameDialog();
 					return;
 				}
-				else if (completeWindow.Result == MultiType.Resources.DialogResult.New)
+				else if (completeWindow.Result == MultiType.SocketsAPI.DialogResult.New)
 				{
 					completeWindow.Close();
 					var window = new MiniLessonSelect();

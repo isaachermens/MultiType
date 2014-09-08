@@ -9,12 +9,11 @@ using System.Threading;
 using MultiType.Models;
 using MultiType.ViewModels;
 
-namespace MultiType.Resources
+namespace MultiType.SocketsAPI
 {
 	internal class AsyncTcpClient
 	{
         private TcpClient _tcpClient;
-        private int _failedConnectionCount;
 		internal PrimaryViewModel _viewModel;
 		internal PrimaryModel _model;
 		internal SerializeBase readData;

@@ -20,7 +20,7 @@ namespace MultiType.ViewModels
 		private bool _showPopup;
 		private bool _connectionEstablished;
 		private LessonModel _model;
-		internal Resources.AsyncTcpClient asyncClient;
+		internal SocketsAPI.AsyncTcpClient asyncClient;
 		private string _errorText;
 		private string _lessonNameEdit;
 		private string _editErrorText;
@@ -171,7 +171,7 @@ namespace MultiType.ViewModels
 		{
 			_model = new LessonModel(this);
 			LessonString = "";
-			IPAddress = "";
+		    IPAddress = "";
 			PortNum = "";
 			RacerSpeeds = new string[] { "10 WPM", "20 WPM", "30 WPM", "40 WPM", "50 WPM", "60 WPM", "70 WPM", "80 WPM", 
 				"90 WPM", "100 WPM", "110 WPM", "120 WPM", "130 WPM", "140 WPM", "150 WPM" };
@@ -196,7 +196,7 @@ namespace MultiType.ViewModels
 					SelectedLessonIndex = index.ToString();
 				return true;
 			}
-			catch (Resources.BadLessonEntryException e)
+			catch (Exceptions.BadLessonEntryException e)
 			{
 				ErrorText = e.Message;
 				return false;
@@ -212,7 +212,7 @@ namespace MultiType.ViewModels
 					SelectedLessonIndex = index.ToString();
 				return true;
 			}
-			catch (Resources.BadLessonEntryException e)
+			catch (Exceptions.BadLessonEntryException e)
 			{
 				EditErrorText = e.Message;
 				return false;
