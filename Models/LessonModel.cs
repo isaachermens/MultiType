@@ -13,9 +13,9 @@ namespace MultiType.Models
 {
 	class LessonModel
 	{
-		private LessonViewModel _viewModel;
+		private LessonVm _viewModel;
 		private string _folderPath; // path to the folder containing the executable
-		internal LessonModel(LessonViewModel viewModel)
+		internal LessonModel(LessonVm viewModel)
 		{
 			_viewModel = viewModel;		
 			GetLessonNames();

@@ -4,7 +4,7 @@ using MultiType.Models;
 
 namespace MultiType.ViewModels
 {
-	class LessonViewModel: INotifyPropertyChanged
+	class LessonVm: INotifyPropertyChanged
 	{
 		#region Private Fields
 
@@ -166,7 +166,7 @@ namespace MultiType.ViewModels
 
 		#endregion
 
-		internal LessonViewModel()
+		internal LessonVm()
 		{
 			_model = new LessonModel(this);
 			LessonString = "";

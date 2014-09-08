@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:MultiType.ViewModels"
         mc:Ignorable="d"
         Title="Lesson Selection" Height="600" Width="850" MinWidth="800" MinHeight="550"
-        ResizeMode="CanResize" d:DataContext="{d:DesignInstance viewModels:LessonViewModel}">
+        ResizeMode="CanResize" d:DataContext="{d:DesignInstance Type=viewModels:LessonVm}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

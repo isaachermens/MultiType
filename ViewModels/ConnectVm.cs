@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace MultiType.ViewModels
 {
-	class ConnectViewModel: INotifyPropertyChanged
+	class ConnectVm: INotifyPropertyChanged
 	{
-		private  ConnectModel _model;
+		private readonly ConnectModel _model;
 		private string _ipAddr;
 		private string _portNumber;
 		private bool _connectionEstablished;
@@ -43,7 +43,7 @@ namespace MultiType.ViewModels
 			set{ _portNumber = value; }
 		}
 
-		internal ConnectViewModel()
+		internal ConnectVm()
 		{
 			_model = new ConnectModel(this);
 			IPAddress = "";

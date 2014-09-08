@@ -12,7 +12,7 @@ namespace MultiType
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PrimaryViewModel _viewModel;
+        private PrimaryVm _viewModel;
 		private int _contentLength;
 		private bool _isSinglePlayer;
 		private bool _isServer;
@@ -24,7 +24,7 @@ namespace MultiType
 			//adjust the placement of the local stats grid to account for a single player
 			LocalStatsGrid.Margin = new Thickness(LocalStatsGrid.Margin.Left, LocalStatsGrid.Margin.Top+20,
 				LocalStatsGrid.Margin.Right, LocalStatsGrid.Margin.Bottom);
-			_viewModel = new PrimaryViewModel(lessonString, UserInput, racerSpeed:racerSpeed);
+			_viewModel = new PrimaryVm(lessonString, UserInput, racerSpeed:racerSpeed);
 			_isSinglePlayer = true;
 			this.DataContext = _viewModel;
 			//_contentLength = 0;
@@ -34,8 +34,8 @@ namespace MultiType
         internal MainWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
         {
 			InitializeComponent();
-			this.DataContext = new PrimaryViewModel(lessonString, UserInput, socket, isServer );
-			_viewModel = (PrimaryViewModel)DataContext;
+			this.DataContext = new PrimaryVm(lessonString, UserInput, socket, isServer );
+			_viewModel = (PrimaryVm)DataContext;
 			_isSinglePlayer = false;
 			ChangeLesson.Visibility = Visibility.Collapsed;
 			_isServer=isServer;			
@@ -77,7 +77,7 @@ namespace MultiType
 		private void LessonSelect_Click(object sender, RoutedEventArgs e)
 		{
 			if (_isSinglePlayer == false) return;
-			var window = new LessonSelect(_isSinglePlayer);
+			var window = new LessonSelect(null, _isSinglePlayer);
 			window.Show();
 			this.Close();
 		}

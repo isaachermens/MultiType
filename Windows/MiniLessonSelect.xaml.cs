@@ -10,12 +10,12 @@ namespace MultiType
 	public partial class MiniLessonSelect : Window
 	{
 		public string LessonString { get; set; }
-		private LessonViewModel _viewModel;
+		private LessonVm _viewModel;
 
 		public MiniLessonSelect()
 		{
 			InitializeComponent();
-			_viewModel = new LessonViewModel();
+			_viewModel = new LessonVm();
 			this.DataContext = _viewModel;
 		}
 

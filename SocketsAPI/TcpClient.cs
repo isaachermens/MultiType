@@ -8,7 +8,7 @@ namespace MultiType.SocketsAPI
 	internal class AsyncTcpClient
 	{
         private TcpClient _tcpClient;
-		internal PrimaryViewModel _viewModel;
+		internal PrimaryVm _viewModel;
 		internal PrimaryModel _model;
 		internal SerializeBase readData;
 

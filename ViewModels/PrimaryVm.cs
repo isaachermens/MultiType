@@ -5,7 +5,7 @@ using MultiType.Models;
 
 namespace MultiType.ViewModels
 {
-    class PrimaryViewModel : INotifyPropertyChanged
+    class PrimaryVm : INotifyPropertyChanged
 	{
 		#region Peer Fields
 
@@ -228,7 +228,7 @@ namespace MultiType.ViewModels
 
 		#endregion
 
-        public PrimaryViewModel(string lessonString, RichTextBox userInput, SocketsAPI.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
+        public PrimaryVm(string lessonString, RichTextBox userInput, SocketsAPI.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
         {
 			if (socket == null)
 			{

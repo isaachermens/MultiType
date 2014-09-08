@@ -11,13 +11,14 @@ namespace MultiType
 	/// </summary>
 	public partial class ClientConnect : Window
 	{
-		ConnectViewModel _viewModel;
-		public ClientConnect()
+		ConnectVm _vm;
+		public ClientConnect(Window owner)
 		{
 			// set up the window and its data context
+		    Owner = owner;
 			InitializeComponent();
-			_viewModel = new ConnectViewModel();
-			this.DataContext = _viewModel;
+			_vm = new ConnectVm();
+			this.DataContext = _vm;
 		}
 
 		/// <summary>
@@ -35,8 +36,8 @@ namespace MultiType
 		/// </summary>
 		private void Connect_Click(object sender, RoutedEventArgs e)
 		{
-			if (_viewModel == null) return;
-			_viewModel.ConnectToServer();
+			if (_vm == null) return;
+			_vm.ConnectToServer();
 		}
 
 		/// <summary>
@@ -45,11 +46,11 @@ namespace MultiType
 		/// </summary>
 		private void ConnectionEstablished_Checked(object sender, RoutedEventArgs e)
 		{
-			if (_viewModel == null && _viewModel.asyncSocket!=null) return;
+			if (_vm == null && _vm.asyncSocket!=null) return;
 			// connection has been established, open the primary window, passing in the peer socket
 			// we don't know what the lesson is yet, so pass an empty string to the view model
 			const string lessonString = "";
-			var window = new MainWindow(_viewModel.asyncSocket, lessonString);
+			var window = new MainWindow(_vm.asyncSocket, lessonString);
 			window.Show();
 			this.Close();
 		}

@@ -30,7 +30,7 @@ namespace MultiType.Models
 		private int _racerSpeed; // stores the racer speed provided from the lesson select window so that it can be used to reinitiallize the game
 		private int _currentRacerIndex; // stores the current location of the racer in single player games
 		internal Stopwatch _stopwatch; // stopwatch used to track time elapsed and calculate WPM
-		private PrimaryViewModel _viewModel; // reference to the view model
+		private PrimaryVm _viewModel; // reference to the view model
 		private AsyncTcpClient _socket; // stores the asynchronous TcpClient used to send and receive data to peer in multiplayer
 		private bool _isMulti; // stores whether the game is multiplayer or not
 		private bool _isServer; // for multiplayer games, stores whether this is the host or client
@@ -41,7 +41,7 @@ namespace MultiType.Models
 
 		#endregion 
 
-		internal PrimaryModel(PrimaryViewModel viewModel, bool isServer, int racerSpeed, AsyncTcpClient socket = null)
+		internal PrimaryModel(PrimaryVm viewModel, bool isServer, int racerSpeed, AsyncTcpClient socket = null)
 		{
 			_viewModel = viewModel;
 			_racerSpeed = racerSpeed;

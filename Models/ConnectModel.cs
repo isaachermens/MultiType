@@ -8,12 +8,12 @@ namespace MultiType.Models
 {
 	class ConnectModel
 	{
-		private ConnectViewModel _viewModel;
+		private ConnectVm _vm;
 
-		internal ConnectModel(ConnectViewModel viewModel)
+		internal ConnectModel(ConnectVm vm)
 		{
 			//store the reference to the view model
-			_viewModel = viewModel;
+			_vm = vm;
 		}
 
 		/// <summary>
@@ -38,19 +38,19 @@ namespace MultiType.Models
 				errorString += "\nPlease enter an IP address in the form 'xxx.xxx.xxx.xxx'. Leading 0's in each segment may be omitted.";
 			// if the error string has changed since initiallization, set error text through databound property.
 			if (errorString != defaultError)
-				_viewModel.InputError = errorString;
+				_vm.InputError = errorString;
 			else //no input errors
 			{
 				try
 				{
 					// initiallize an asynchronous socket and alert the GUI that a connection has been established, 
 					// using the ConnectionEstablished databound property.
-					_viewModel.asyncSocket = new AsyncTcpClient(ipAddr, portNumber);
-					_viewModel.ConnectionEstablished = true;
+					_vm.asyncSocket = new AsyncTcpClient(ipAddr, portNumber);
+					_vm.ConnectionEstablished = true;
 				}
 				catch (SocketException e)
 				{ // something went wrong, set error text
-					_viewModel.InputError = "A connection could not be established, please check your input values.";
+					_vm.InputError = "A connection could not be established, please check your input values.";
 				}
 			}
 

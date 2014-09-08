@@ -9,14 +9,15 @@ namespace MultiType
 	/// </summary>
 	public partial class LessonSelect : Window
 	{
-		private LessonViewModel _viewModel;
+		private LessonVm _viewModel;
 		private bool _isSinglePlayer;
-		public LessonSelect(bool isSinglePlayer = false)
+		public LessonSelect(Window owner = null, bool isSinglePlayer = false)
 		{
+		    Owner = owner;
 			_isSinglePlayer = isSinglePlayer;
 			InitializeComponent();
-			this.DataContext = new LessonViewModel();
-			_viewModel = (LessonViewModel)this.DataContext;
+			this.DataContext = new LessonVm();
+			_viewModel = (LessonVm)this.DataContext;
 			if(_isSinglePlayer==false)
 			{
 				RacerSpeed.Visibility = Visibility.Collapsed;
