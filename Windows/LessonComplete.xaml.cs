@@ -20,32 +20,29 @@ namespace MultiType
 	/// </summary>
 	public partial class LessonComplete : Window
 	{
-		internal SocketsAPI.DialogResult Result { get; set; }
+        internal Miscellaneous.DialogResult Result { get; set; }
 
 		public LessonComplete()
 		{
 			InitializeComponent();
 		}
 
-		/// <summary>
-		/// Determine which of the three buttons has been clicked and return the appropriate dialog result to the main window.
-		/// </summary>
-		private void Btn_Click(object sender, RoutedEventArgs e)
-		{
-			var btn = (Button)sender;
-			if (btn.Name == "Repeat")
-			{
-				Result = MultiType.SocketsAPI.DialogResult.Repeat;
-				DialogResult = true;
-			}
-			else if (btn.Name == "SelectNew")
-			{
-				Result = MultiType.SocketsAPI.DialogResult.New;
-				DialogResult = true;
-			}
-			else
-				DialogResult = false;
-		}
+	    private void SelectNew_Click(object sender, RoutedEventArgs e)
+	    {
+            Result = Miscellaneous.DialogResult.New;
+            DialogResult = true;
+	    }
+
+	    private void Repeat_Click(object sender, RoutedEventArgs e)
+	    {
+            Result = Miscellaneous.DialogResult.Repeat;
+            DialogResult = true;
+	    }
+
+	    private void Quit_Click(object sender, RoutedEventArgs e)
+	    {
+            DialogResult = false;
+	    }
 	}
 }
 

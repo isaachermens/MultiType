@@ -86,8 +86,7 @@ namespace MultiType
 		private void Save_Click(object sender, RoutedEventArgs e)
 		{
 			var lessonText = LessonEntry.Text;
-			var lessonName = LessonName.Text;
-			if (_viewModel.CreateNewLesson(lessonName, lessonText))
+			if (_viewModel.CreateNewLesson(lessonText))
 			{
 				HideEntryGrid();
 				LessonEntry.Text = "";
@@ -99,22 +98,22 @@ namespace MultiType
 		{
 			HideEntryGrid();
 		}
-
+        // Todo convery visibilty sets to use data binding and a value converter
 		private void CreateNew_Click(object sender, RoutedEventArgs e)
 		{
 			LessonEntryGrid.Visibility = Visibility.Visible;
-			LessonContentGrid.Visibility = Visibility.Collapsed;
+			LessonContent.Visibility = Visibility.Collapsed;
 		}
 
 		private void HideEntryGrid()
 		{
 			LessonEntryGrid.Visibility = Visibility.Collapsed;
-			LessonContentGrid.Visibility = Visibility.Visible;	
+            LessonContent.Visibility = Visibility.Visible;	
 		}
 
 		private void HideEditGrid()
 		{
-			LessonContentGrid.Visibility = Visibility.Visible;
+            LessonContent.Visibility = Visibility.Visible;
 			LessonEditGrid.Visibility = Visibility.Collapsed;
 		}
 
@@ -122,7 +121,7 @@ namespace MultiType
 		{
 			LessonEdit.Text = _viewModel.LessonString;
 			LessonNameEdit.Text = _viewModel.LessonNames[Int32.Parse(_viewModel.SelectedLessonIndex)];
-			LessonContentGrid.Visibility = Visibility.Collapsed;
+            LessonContent.Visibility = Visibility.Collapsed;
 			LessonEditGrid.Visibility = Visibility.Visible;
 		}
 

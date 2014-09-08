@@ -119,14 +119,14 @@ namespace MultiType
 					completeWindow.Close();
                     App.Current.Shutdown();
 				}
-				else if (completeWindow.Result == MultiType.SocketsAPI.DialogResult.Repeat)
+				else if (completeWindow.Result == Miscellaneous.DialogResult.Repeat)
 				{
 					completeWindow.Close();
 					_viewModel.RepeatLesson();
 					OpenStartGameDialog();
 					return;
 				}
-				else if (completeWindow.Result == MultiType.SocketsAPI.DialogResult.New)
+                else if (completeWindow.Result == Miscellaneous.DialogResult.New)
 				{
 					completeWindow.Close();
 					var window = new MiniLessonSelect();
