@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Timers;
 using MultiType.SocketsAPI;
 using MultiType.ViewModels;
-using System.Net.Sockets;
-using System.Net;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows;
 
 namespace MultiType.Models
 {

@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
-using System.Timers;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Input;
 using System.Windows.Controls;
 using MultiType.Models;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Documents;
 
 namespace MultiType.ViewModels
 {

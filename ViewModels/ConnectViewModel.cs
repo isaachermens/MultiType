@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MultiType.Models;
-using System.Net;
+﻿using MultiType.Models;
 using System.ComponentModel;
 
 namespace MultiType.ViewModels
