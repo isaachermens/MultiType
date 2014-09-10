@@ -1,0 +1,18 @@
+﻿<Window x:Class="MultiType.LessonComplete"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lesson Complete" Height="150" Width="400"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="..\Resources\RoundedButton.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Button Name="Repeat" Content="Repeat Lesson" Margin="0,0,0,0" Width="100" Click="Repeat_Click" Style="{DynamicResource RoundedButton}"/>
+        <Button Name="SelectNew" Content="Select New Lesson" Margin="10,0,0,0" Width="120" Click="SelectNew_Click" Style="{DynamicResource RoundedButton}"/>
+        <Button Name="Quit" Content="Quit" HorizontalAlignment="Left" Margin="10,0,0,0" Width="100" Click="Quit_Click" Style="{DynamicResource RoundedButton}"/>
+    </StackPanel>
+</Window>

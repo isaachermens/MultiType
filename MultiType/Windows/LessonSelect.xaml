@@ -1,0 +1,92 @@
+﻿<Window x:Class="MultiType.LessonSelect"
+        WindowStartupLocation="CenterOwner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:MultiType.ViewModels"
+        mc:Ignorable="d"
+        Title="Lesson Selection" Height="600" Width="850" MinWidth="800" MinHeight="550"
+        ResizeMode="CanResize" d:DataContext="{d:DesignInstance Type=viewModels:LessonVm}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\RoundedButton.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <Border Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <Button Name="Menu" Content="Back" Margin="0,0,10,0" Click="Cancel_Click" Width="55"
+                        Style="{DynamicResource RoundedButton}" />
+                <ComboBox HorizontalAlignment="Left" Width="170" ItemsSource="{Binding LessonNames}" SelectedIndex="{Binding SelectedLessonIndex}" Margin="0,0,10,0"/>
+                <Button Name="CreateLessonBtn" Content="Create New Lesson" Margin="0,0,10,0" Width="110" Click="CreateNew_Click"
+                        Style="{DynamicResource RoundedButton}"/>
+                <Button Name="EditBtn" Content="Edit Lesson" IsEnabled="{Binding AllowEdit}" Margin="0,0,10,0" Width="75"
+                        Click="EditBtn_Click" Style="{DynamicResource RoundedButton}" />
+                <Button Name="DeleteBtn" Content="Delete Lesson" IsEnabled="{Binding AllowEdit}" Margin="0,0,5,0" Width="85"
+                        Click="DeleteBtn_Click" Style="{DynamicResource RoundedButton}" />
+                <Label Name="RacerSpeed" Content="Racer Speed:" Margin="0,0,5,0" />
+                <ComboBox Name="RacerSpeeds" Margin="0,0,5,0" ItemsSource="{Binding RacerSpeeds}"
+                        SelectedIndex="{Binding RacerIndex}" Width="100" />
+                <Button Name="Choose" Content="Start Lesson" Margin="0,0,0,0" Width="85" Click="Choose_Click"
+                        Style="{DynamicResource RoundedButton}" />
+            </StackPanel>
+        </Border>
+        <Border x:Name="LessonContent" BorderBrush="LawnGreen" BorderThickness="2" Padding="10" Visibility="Visible">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding LessonString}" TextWrapping="Wrap" />
+            </ScrollViewer>
+        </Border>
+        <Border Padding="10" Name="LessonEntryGrid" Visibility="Collapsed" BorderBrush="LawnGreen" BorderThickness="2">
+            <StackPanel Orientation="Vertical">
+                <ScrollViewer Name="LessonEntryScroll" VerticalScrollBarVisibility="Auto">
+                    <TextBox Name="LessonEntry" TextWrapping="Wrap" AcceptsReturn="True" MinLines="15"></TextBox>
+                </ScrollViewer>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Label Content="Lesson Name:" Margin="0,0,5,0" Height="25"/>
+                    <TextBox Name="LessonName" Margin="0,0,10,0" Width="130" Height="25" Text="{Binding Lesson}" VerticalContentAlignment="Center"/>
+                    <Button Content="Save" Margin="0,0,10,0" Width="75" Click="Save_Click" Height="25" Style="{DynamicResource RoundedButton}"/>
+                    <Button Content="Cancel" Margin="0,0,10,0" Width="75" Click="CancelAdd_Click" Height="25"
+                            Style="{DynamicResource RoundedButton}" />
+                    <Border Height="25">
+                        <TextBlock Text="aaaaaa" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" />
+                     </Border>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border Name="LessonEditGrid" Padding="10" Visibility="Collapsed" BorderBrush="LawnGreen" BorderThickness="2">
+            <StackPanel Orientation="Vertical">
+                <ScrollViewer Name="LessonEditScroll" VerticalScrollBarVisibility="Auto">
+                    <TextBox Name="LessonEdit" AcceptsReturn="True" TextWrapping="Wrap" MinLines="15"></TextBox>
+                </ScrollViewer>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Lesson Name:" Margin="0,0,10,0" Height="25"/>
+                    <TextBox Name="LessonNameEdit" Text="{Binding LessonNameEdit, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,10,0" Width="130" Height="25" VerticalContentAlignment="Center" />
+                    <Button Content="Save" Margin="0,0,10,0" Width="75" Click="SaveEdit_Click"
+                            Height="25" Style="{DynamicResource RoundedButton}"/>
+                    <Button Content="Cancel" Margin="0,0,10,0" Width="75" Click="CancelEdit_Click"
+                            Height="25" Style="{DynamicResource RoundedButton}"/>
+                    <TextBlock Text="{Binding EditErrorText}" Margin="0,0,10,0" TextWrapping="Wrap"
+                            Height="25"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Popup Name="PendingConnection" IsOpen="{Binding ShowPopup}" Placement="Center">
+            <Border BorderBrush="White" BorderThickness="3,3,0,0">
+                <Border BorderBrush="Black" BorderThickness="1,1,3,3">
+                    <StackPanel Background="Honeydew">
+                        <Label FontSize="20" Content="{Binding IPAddress}"></Label>
+                        <Label FontSize="20" Content="{Binding PortNum}"></Label>
+                        <Label FontSize="20" Content="Waiting for a user to connect..." />
+                    </StackPanel>
+                </Border>
+            </Border>
+        </Popup>
+        <CheckBox Name="ConnectionEstablished" Visibility="Hidden" Content="" IsChecked="{Binding ConnectionEstablished}"
+                HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Checked="ConnectionEstablished_Checked"
+                Height="16" Width="17" />
+    </StackPanel>
+</Window>
