@@ -7,8 +7,6 @@ namespace MultiType.ViewModels
 {
     public class MenuVm : BaseVm
     {
-        private readonly Window _host;
-
         public LambdaCommand JoinGameCommand { get; set; }
         public LambdaCommand HostGameCommand { get; set; }
         public LambdaCommand PlayAloneCommand { get; set; }
@@ -21,11 +19,11 @@ namespace MultiType.ViewModels
             {
                 throw new ArgumentNullException();
             }
-            _host = host;
+            HostWindow = host;
 
-            JoinGameCommand = new LambdaCommand(()=>new ClientConnect(_host));
-            HostGameCommand = new LambdaCommand(()=>new LessonSelect(_host));
-            PlayAloneCommand = new LambdaCommand(()=>ShowWindowAsDialog(new LessonSelect(_host, true)));
+            JoinGameCommand = new LambdaCommand(() => ShowWindowAsDialog(new ClientConnect(HostWindow)));
+            HostGameCommand = new LambdaCommand(() => ShowWindowAsDialog(new LessonSelect(HostWindow)));
+            PlayAloneCommand = new LambdaCommand(() => ShowWindowAsDialog(new LessonSelect(HostWindow, true)));
             CloseAppCommand = new LambdaCommand(()=>Application.Current.Shutdown());
         }
     }

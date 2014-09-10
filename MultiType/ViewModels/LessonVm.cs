@@ -1,178 +1,83 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using MultiType.Models;
 
 namespace MultiType.ViewModels
 {
-	class LessonVm: INotifyPropertyChanged
+	class LessonVm: BaseVm
 	{
 		#region Private Fields
 
-		private string[] _lessonNames;
-		private string _lessonString;
-		private int _selectedIndex;
-		private string _ipAddress;
-		private string _portNum;
-		private bool _showPopup;
-		private bool _connectionEstablished;
 		private LessonModel _model;
 		internal SocketsAPI.AsyncTcpClient asyncClient;
-		private string _errorText;
-		private string _lessonNameEdit;
-		private string _editErrorText;
-		private string[] _racerSpeeds;
-        private int _racerIndex;
-        private string _lessonName;
+
+	    private readonly Window _host;
 
 		#endregion
 
 		#region DataBound Properties
 
 		public int RacerSpeed
-		{
-			get { return Int32.Parse(_racerSpeeds[_racerIndex].Split(' ')[0]); }
+		{ // todo not sure
+			get { return Int32.Parse(RacerSpeeds[RacerIndex].Split(' ')[0]); }
 		}
-		public string[] RacerSpeeds
-		{
-			get { return _racerSpeeds; }
-			set
-			{
-				_racerSpeeds = value;
-				NotifyPropertyChanged("RacerSpeeds");
-			}
-		}
+		public string[] RacerSpeeds { get; set; }
 
-		public int RacerIndex
-		{
-			get { return _racerIndex; }
-			set
-			{
-				_racerIndex = value;
-				NotifyPropertyChanged("RacerIndex");
-			}
-		}
+		public int RacerIndex { get; set; }
 
 		public bool AllowEdit
 		{
-			get { return _selectedIndex != 0; }
+			get { return Int32.Parse(SelectedLessonIndex) != 0; } // todo hmm?
 		}
 
-		public string LessonNameEdit
-		{
-			get { return _lessonNameEdit; }
-			set{
-				_lessonNameEdit = value;
-				NotifyPropertyChanged("LessonNameEdit");
-			}
-		}
+	    public string LessonNameEdit { get; set; }
 
-		public string EditErrorText
-		{
-			get { return _editErrorText; }
-			set{
-				_editErrorText = value;
-				NotifyPropertyChanged("EditErrorText");
-			}
-		}
+	    public string EditErrorText { get; set; }
 
-		public string ErrorText
-		{
-			get { return _errorText; }
-			set
-			{
-				_errorText = value;
-				NotifyPropertyChanged("ErrorText");
-			}
-		}
+		public string ErrorText { get; set; }
 
-		public bool ConnectionEstablished
-		{
-			get { return _connectionEstablished; }
-			set
-			{
-				_connectionEstablished = value;
-				if (value)
-					ShowPopup = false;
-				NotifyPropertyChanged("ConnectionEstablished");
-			}
-		}
+		public bool ConnectionEstablished { get; set; }
 
-		public bool ShowPopup
-		{
-			get{return _showPopup;}
-			set{
-				_showPopup=value;
-				NotifyPropertyChanged("ShowPopup");
-			}
-		}
-		public string IPAddress
-		{
-			get { return _ipAddress; }
-			set 
-			{
-				_ipAddress = "IP Address: " + value;
-				NotifyPropertyChanged("IPAddress");
-			}
-		}
+		public bool ShowPopup { get; set; }
+		
+        public string IPAddress { get; set; }
 
-		public string PortNum
-		{
-			get { return _portNum; }
-			set
-			{
-				_portNum = "Port Number: " + value;
-				NotifyPropertyChanged("PortNum");
-			}
-		}
+		public string PortNum { get; set; }
 
-		public string[] LessonNames
-		{
-			get { return _lessonNames; }
-			set
-			{
-				_lessonNames = value;
-				NotifyPropertyChanged("LessonNames");
-			}
-		}
-        public string LessonName { get { return _lessonName; } set { _lessonName = value; NotifyPropertyChanged("LessonName"); } }
+		public string[] LessonNames { get; set; }
+        public string LessonName { get; set; }
 
-		public string LessonString
-		{
-			get { return _lessonString; }
-			set
-			{
-				_lessonString = value;
-				NotifyPropertyChanged("LessonString");
-			}
-		}
-		public string SelectedLessonIndex
-		{
-			get { return _selectedIndex.ToString(); }
-			set 
-			{ 
-				_selectedIndex = Int32.Parse(value);
-				NotifyPropertyChanged("SelectedLessonIndex");
-				NotifyPropertyChanged("AllowEdit");
-				if(_model==null) return;
-				if (_selectedIndex == 0) // the default option has been reselected, clear the lesson string
-					LessonString = "";
-				else
-				{
-					var lessonName = _lessonNames[_selectedIndex];
-					LessonString = _model.GetLessonText(lessonName);
-				}
-			}
+		public string LessonString { get; set; }
+
+        // TODO definitely fix
+	    public string SelectedLessonIndex { get; set;  //get { return _selectedIndex.ToString(); }
+		    //set 
+		    //{ 
+		    //    _selectedIndex = Int32.Parse(value);
+		    //    NotifyPropertyChanged("SelectedLessonIndex");
+		    //    NotifyPropertyChanged("AllowEdit");
+		    //    if(_model==null) return;
+		    //    if (_selectedIndex == 0) // the default option has been reselected, clear the lesson string
+		    //        LessonString = "";
+		    //    else
+		    //    {
+		    //        var lessonName = _lessonNames[_selectedIndex];
+		    //        LessonString = _model.GetLessonText(lessonName);
+		    //    }
+		    //}
 		}
 
 		#endregion
 
-		internal LessonVm()
+		internal LessonVm(Window host)
 		{
-			_model = new LessonModel(this);
+		    _host = host;
+			_model = new LessonModel(this); // todo remove
 			LessonString = "";
 		    IPAddress = "";
 			PortNum = "";
-			RacerSpeeds = new string[] { "10 WPM", "20 WPM", "30 WPM", "40 WPM", "50 WPM", "60 WPM", "70 WPM", "80 WPM", 
+			RacerSpeeds = new [] { "10 WPM", "20 WPM", "30 WPM", "40 WPM", "50 WPM", "60 WPM", "70 WPM", "80 WPM", 
 				"90 WPM", "100 WPM", "110 WPM", "120 WPM", "130 WPM", "140 WPM", "150 WPM" };
 			RacerIndex = 5;
 		}
@@ -205,7 +110,7 @@ namespace MultiType.ViewModels
 	    internal bool EditLesson(string newLessonName, string newLessonText)
 		{
 			try{
-				_model.EditLesson(LessonNames[_selectedIndex], newLessonName, newLessonText);
+				// todo fix_model.EditLesson(LessonNames[_selectedIndex], newLessonName, newLessonText);
 				var index = Array.IndexOf(LessonNames, newLessonName, 0);
 				if (index != -1)
 					SelectedLessonIndex = index.ToString();
@@ -220,10 +125,11 @@ namespace MultiType.ViewModels
 
 		internal void DeleteCurrentLesson()
 		{
-			if (_selectedIndex == 0)
-				return;
-			_model.DeleteCurrentLesson(_lessonNames[_selectedIndex]);
-			SelectedLessonIndex = "0";
+            //if (_selectedIndex == 0)
+            //    return;
+            //_model.DeleteCurrentLesson(_lessonNames[_selectedIndex]);
+            //SelectedLessonIndex = "0";
+            // todo fix
 		}
 
 		#region NPC Implementation

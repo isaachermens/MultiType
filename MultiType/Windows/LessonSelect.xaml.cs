@@ -9,14 +9,14 @@ namespace MultiType
 	/// </summary>
 	public partial class LessonSelect : Window
 	{
-		private LessonVm _viewModel;
-		private bool _isSinglePlayer;
+		private readonly LessonVm _viewModel;
+		private readonly bool _isSinglePlayer;
 		public LessonSelect(Window owner = null, bool isSinglePlayer = false)
 		{
 		    Owner = owner;
 			_isSinglePlayer = isSinglePlayer;
 			InitializeComponent();
-			this.DataContext = new LessonVm();
+			this.DataContext = new LessonVm(this);
 			_viewModel = (LessonVm)this.DataContext;
 			if(_isSinglePlayer==false)
 			{
