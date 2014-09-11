@@ -11,7 +11,7 @@ namespace MultiType
 		public Menu()
 		{
 			InitializeComponent();
-		    DataContext = new MenuVm(this);
+		    DataContext = new MenuVm();
 		}
 	}
 }

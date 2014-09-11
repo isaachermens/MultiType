@@ -13,8 +13,6 @@ namespace MultiType.ViewModels
 		private LessonModel _model;
 		internal AsyncTcpClient asyncClient;
 
-	    private readonly Window _host;
-
 		#endregion
 
 		#region DataBound Properties
@@ -71,9 +69,8 @@ namespace MultiType.ViewModels
 
 		#endregion
 
-		internal LessonVm(Window host)
+		internal LessonVm()
 		{
-		    _host = host;
 			_model = new LessonModel(this); // todo remove
 			LessonString = "";
 		    IPAddress = "";

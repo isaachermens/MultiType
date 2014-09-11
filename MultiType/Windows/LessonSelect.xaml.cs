@@ -16,7 +16,7 @@ namespace MultiType
 		    Owner = owner;
 			_isSinglePlayer = isSinglePlayer;
 			InitializeComponent();
-			this.DataContext = new LessonVm(this);
+			this.DataContext = new LessonVm();
 			_viewModel = (LessonVm)this.DataContext;
 			if(_isSinglePlayer==false)
 			{

@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\LambdaCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Exceptions\BadLessonEntryException.cs" />
     <Compile Include="ViewModels\BaseVm.cs" />
     <Compile Include="ViewModels\MenuVm.cs" />

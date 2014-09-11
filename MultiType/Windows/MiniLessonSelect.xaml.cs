@@ -15,7 +15,7 @@ namespace MultiType
 		public MiniLessonSelect()
 		{
 			InitializeComponent();
-			_viewModel = new LessonVm(this);
+			_viewModel = new LessonVm();
 			this.DataContext = _viewModel;
 		}
 
