@@ -108,7 +108,7 @@ namespace MultiType
 		private void EditBtn_Click(object sender, RoutedEventArgs e)
 		{
 			LessonEdit.Text = _viewModel.LessonString;
-			LessonNameEdit.Text = _viewModel.LessonNames[Int32.Parse(_viewModel.SelectedLessonIndex)];
+			LessonNameEdit.Text = _viewModel.LessonNames[_viewModel.SelectedLessonIndex];
             LessonContent.Visibility = Visibility.Collapsed;
 			LessonEditGrid.Visibility = Visibility.Visible;
 		}

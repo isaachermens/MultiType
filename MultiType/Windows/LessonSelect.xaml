@@ -28,7 +28,7 @@
                 <Button Name="DeleteBtn" Content="Delete Lesson" IsEnabled="{Binding AllowEdit}" Margin="0,0,5,0" Width="85"
                         Click="DeleteBtn_Click" Style="{DynamicResource RoundedButton}" />
                 <Label Name="RacerSpeed" Content="Racer Speed:" Margin="0,0,5,0" />
-                <ComboBox Name="RacerSpeeds" Margin="0,0,5,0" ItemsSource="{Binding RacerSpeeds}"
+                <ComboBox Name="RacerSpeeds" Margin="0,0,5,0" ItemsSource="{Binding Path=RacerSpeeds}" ItemStringFormat="0 WPM"
                         SelectedIndex="{Binding RacerIndex}" Width="100" />
                 <Button Name="Choose" Content="Start Lesson" Margin="0,0,0,0" Width="85" Click="Choose_Click"
                         Style="{DynamicResource RoundedButton}" />
@@ -46,7 +46,7 @@
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                     <Label Content="Lesson Name:" Margin="0,0,5,0" Height="25"/>
-                    <TextBox Name="LessonName" Margin="0,0,10,0" Width="130" Height="25" Text="{Binding Lesson}" VerticalContentAlignment="Center"/>
+                    <TextBox Name="LessonName" Margin="0,0,10,0" Width="130" Height="25" Text="{Binding LessonName, Mode=TwoWay}" VerticalContentAlignment="Center"/>
                     <Button Content="Save" Margin="0,0,10,0" Width="75" Click="Save_Click" Height="25" Style="{DynamicResource RoundedButton}"/>
                     <Button Content="Cancel" Margin="0,0,10,0" Width="75" Click="CancelAdd_Click" Height="25"
                             Style="{DynamicResource RoundedButton}" />

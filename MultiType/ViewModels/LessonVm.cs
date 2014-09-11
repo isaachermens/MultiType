@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using MultiType.Models;
+using MultiType.SocketsAPI;
 
 namespace MultiType.ViewModels
 {
@@ -10,7 +11,7 @@ namespace MultiType.ViewModels
 		#region Private Fields
 
 		private LessonModel _model;
-		internal SocketsAPI.AsyncTcpClient asyncClient;
+		internal AsyncTcpClient asyncClient;
 
 	    private readonly Window _host;
 
@@ -20,15 +21,15 @@ namespace MultiType.ViewModels
 
 		public int RacerSpeed
 		{ // todo not sure
-			get { return Int32.Parse(RacerSpeeds[RacerIndex].Split(' ')[0]); }
+			get { return RacerSpeeds[RacerIndex]; }
 		}
-		public string[] RacerSpeeds { get; set; }
+		public int[] RacerSpeeds { get; set; }
 
 		public int RacerIndex { get; set; }
 
 		public bool AllowEdit
 		{
-			get { return Int32.Parse(SelectedLessonIndex) != 0; } // todo hmm?
+			get { return SelectedLessonIndex != 0; } // todo hmm?
 		}
 
 	    public string LessonNameEdit { get; set; }
@@ -51,7 +52,7 @@ namespace MultiType.ViewModels
 		public string LessonString { get; set; }
 
         // TODO definitely fix
-	    public string SelectedLessonIndex { get; set;  //get { return _selectedIndex.ToString(); }
+	    public int SelectedLessonIndex { get; set;  //get { return _selectedIndex.ToString(); }
 		    //set 
 		    //{ 
 		    //    _selectedIndex = Int32.Parse(value);
@@ -77,14 +78,13 @@ namespace MultiType.ViewModels
 			LessonString = "";
 		    IPAddress = "";
 			PortNum = "";
-			RacerSpeeds = new [] { "10 WPM", "20 WPM", "30 WPM", "40 WPM", "50 WPM", "60 WPM", "70 WPM", "80 WPM", 
-				"90 WPM", "100 WPM", "110 WPM", "120 WPM", "130 WPM", "140 WPM", "150 WPM" };
+		    RacerSpeeds = new[] {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150};
 			RacerIndex = 5;
 		}
 
 		internal void OpenConnectionPendingPopup()
 		{
-			if (SelectedLessonIndex == "0" || LessonString == null)
+			if (SelectedLessonIndex == 0 || LessonString == null)
 				throw new Exception("User must select a lesson before attempting to host the game.");
 			ShowPopup = true;			
 			_model.OpenListenSocket();
@@ -97,7 +97,7 @@ namespace MultiType.ViewModels
 				_model.CreateNewLesson(LessonName, lessonText);
                 var index = Array.IndexOf(LessonNames, LessonName, 0);
 				if(index!=-1)
-					SelectedLessonIndex = index.ToString();
+					SelectedLessonIndex = index;
 				return true;
 			}
 			catch (Exceptions.BadLessonEntryException e)
@@ -113,7 +113,7 @@ namespace MultiType.ViewModels
 				// todo fix_model.EditLesson(LessonNames[_selectedIndex], newLessonName, newLessonText);
 				var index = Array.IndexOf(LessonNames, newLessonName, 0);
 				if (index != -1)
-					SelectedLessonIndex = index.ToString();
+					SelectedLessonIndex = index;
 				return true;
 			}
 			catch (Exceptions.BadLessonEntryException e)
