@@ -2,6 +2,8 @@
 using MultiType.Commands;
 using MultiType.Models;
 using System.ComponentModel;
+using MultiType.Services;
+using MultiType.Windows;
 using PropertyChanged;
 
 namespace MultiType.ViewModels
@@ -9,8 +11,9 @@ namespace MultiType.ViewModels
     [ImplementPropertyChanged]
 	class ConnectVm : BaseVm
 	{
-		private readonly ConnectModel _model;
-		internal SocketsAPI.AsyncTcpClient asyncSocket;
+		private readonly SocketConnectionService _connectService = new SocketConnectionService();
+		private SocketsAPI.AsyncTcpClient _socket;
+        private readonly Window _host;
 
         public RelayCommand<Window> Cancel { get { return new RelayCommand<Window>(w =>
         {
@@ -28,15 +31,23 @@ namespace MultiType.ViewModels
 
         public int PortNumber { get; set; }
 
-		internal ConnectVm()
+		internal ConnectVm(Window hostWindow)
 		{
-			_model = new ConnectModel(this);
 			IpAddress = "";
+		    _host = hostWindow;
 		}
 
 		internal void ConnectToServer()
 		{
-			_model.ConnectToServer(IpAddress, PortNumber);
+		    var error = string.Empty;
+		    if (_connectService.TryConnectToServer(IpAddress, PortNumber, ref _socket, ref error))
+		    {
+		        ShowWindowAsDialog(_host, new TypingWindow(_socket, ""));
+		    }
+		    else
+		    {
+		        InputError = error;
+		    }
 		}
 
 		#region NPC Implementation

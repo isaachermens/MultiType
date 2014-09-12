@@ -73,7 +73,7 @@
     <Compile Include="Windows\SimpleLessonSelect.xaml.cs">
       <DependentUpon>SimpleLessonSelect.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConnectModel.cs" />
+    <Compile Include="Services\SocketConnectionService.cs" />
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="SocketsAPI\TcpClient.cs" />
     <Compile Include="SocketsAPI\TransferClasses.cs" />

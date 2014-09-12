@@ -34,7 +34,5 @@
             <Button Name="CancelBtn" Content="Cancel" Margin="10,0,0,0" Width="75" Command="{Binding Cancel}" CommandParameter="{Binding ElementName=ConnectWindow}" Style="{DynamicResource RoundedButton}"/>
         </StackPanel>
         <!--todo remove-->
-        <CheckBox Name="ConnectionEstablished" Visibility="Hidden" Content="" IsChecked="{Binding ConnectionEstablished}"
-                HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Checked="ConnectionEstablished_Checked" />
     </StackPanel>
 </Window>
