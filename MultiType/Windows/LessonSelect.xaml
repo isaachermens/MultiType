@@ -40,13 +40,13 @@
         </Border>
         <Border Visibility="{Binding IsShowingNormal, Converter={StaticResource BoolToVis}}" BorderBrush="LawnGreen" BorderThickness="2" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding LessonString}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding LessonContent}" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
         <Border Padding="10" Visibility="{Binding IsCreating, Converter={StaticResource BoolToVis}}" BorderBrush="LawnGreen" BorderThickness="2">
             <StackPanel Orientation="Vertical">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" MinLines="15" Text="{Binding NewLessonText}"/>
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" MinLines="15" Text="{Binding NewLessonContent}"/>
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                     <Label Content="Lesson Name:" Margin="0,0,5,0" Height="25"/>
@@ -58,7 +58,7 @@
                             Style="{DynamicResource RoundedButton}" 
                             Command="{Binding CompleteCreate}"/>
                     <Border Height="25">
-                        <TextBlock Text="{Binding CreateErrorText}" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding CreateErrorMessage}" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" />
                      </Border>
                 </StackPanel>
             </StackPanel>
@@ -66,11 +66,11 @@
         <Border Padding="10" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}" BorderBrush="LawnGreen" BorderThickness="2">
             <StackPanel Orientation="Vertical">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" MinLines="15" Text="{Binding LessonTextEdit}"/>
+                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" MinLines="15" Text="{Binding EditLessonContent}"/>
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Lesson Name:" Margin="0,0,10,0" Height="25"/>
-                    <TextBox Text="{Binding LessonNameEdit, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Text="{Binding EditLessonName, UpdateSourceTrigger=PropertyChanged}"
                             Margin="0,0,10,0" Width="130" Height="25" VerticalContentAlignment="Center" />
                     <Button Content="Save" Margin="0,0,10,0" Width="75"
                             Command="{Binding SaveEdit}"
@@ -78,7 +78,7 @@
                     <Button Content="Cancel" Margin="0,0,10,0" Width="75"
                             Command="{Binding CompleteEdit}"
                             Height="25" Style="{DynamicResource RoundedButton}"/>
-                    <TextBlock Text="{Binding EditErrorText}" Margin="0,0,10,0" TextWrapping="Wrap"
+                    <TextBlock Text="{Binding EditErrorMessage}" Margin="0,0,10,0" TextWrapping="Wrap"
                             Height="25"/>
                 </StackPanel>
             </StackPanel>
