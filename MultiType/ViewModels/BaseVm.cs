@@ -13,6 +13,7 @@ namespace MultiType.ViewModels
             if (target.ShowDialog() == true)
             {
                 host.Show();
+                host.Activate();
             }
             else
             {
