@@ -2,7 +2,7 @@
 using System.Windows;
 using MultiType.ViewModels;
 
-namespace MultiType
+namespace MultiType.Windows
 {
 	/// <summary>
 	/// Interaction logic for LessonSelect.xaml

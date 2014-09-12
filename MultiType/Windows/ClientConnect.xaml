@@ -1,4 +1,4 @@
-﻿<Window x:Class="MultiType.ClientConnect"
+﻿<Window x:Class="MultiType.Windows.ClientConnect"
         WindowStartupLocation="CenterOwner"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

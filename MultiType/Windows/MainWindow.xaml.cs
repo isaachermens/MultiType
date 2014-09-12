@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MultiType.ViewModels;
 
-namespace MultiType
+namespace MultiType.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

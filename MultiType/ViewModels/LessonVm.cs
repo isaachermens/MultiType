@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using MultiType.Commands;
 using MultiType.Models;
 using MultiType.SocketsAPI;
+using MultiType.Windows;
 using PropertyChanged;
 
 namespace MultiType.ViewModels

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MultiType.ViewModels;
 
-namespace MultiType
+namespace MultiType.Windows
 {
 	/// <summary>
 	/// Interaction logic for ClientConnect.xaml

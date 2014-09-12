@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using MultiType.Commands;
+using MultiType.Windows;
 using PropertyChanged;
 
 namespace MultiType.ViewModels

@@ -1,4 +1,4 @@
-﻿<Window x:Class="MultiType.LessonSelect"
+﻿<Window x:Class="MultiType.Windows.LessonSelect"
         x:Name="LessonSelectWindow"
         WindowStartupLocation="CenterOwner"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
