@@ -30,7 +30,7 @@ namespace MultiType.Windows
 			if (_viewModel == null && _viewModel.asyncClient!=null) return;
 			// connection has been established, open the primary window, passing in the peer socket
 			this.Visibility = Visibility.Hidden;
-			var window = new MainWindow(_viewModel.asyncClient, _viewModel.LessonString, true);
+			var window = new TypingWindow(_viewModel.asyncClient, _viewModel.LessonString, true);
 			window.Show();
 			this.Close();
 		}

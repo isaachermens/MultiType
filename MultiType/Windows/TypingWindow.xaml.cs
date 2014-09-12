@@ -8,34 +8,35 @@ using MultiType.ViewModels;
 namespace MultiType.Windows
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TypingWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TypingWindow : Window
     {
-        private PrimaryVm _viewModel;
+        private TypingVm _viewModel;
+
 		private int _contentLength;
 		private bool _isSinglePlayer;
 		private bool _isServer;
 
-		internal MainWindow(string lessonString, int racerSpeed)
+		internal TypingWindow(string lessonString, int racerSpeed)
 		{
 			InitializeComponent();
 			PeerStatsGrid.Visibility = Visibility.Hidden;
 			//adjust the placement of the local stats grid to account for a single player
 			LocalStatsGrid.Margin = new Thickness(LocalStatsGrid.Margin.Left, LocalStatsGrid.Margin.Top+20,
 				LocalStatsGrid.Margin.Right, LocalStatsGrid.Margin.Bottom);
-			_viewModel = new PrimaryVm(lessonString, UserInput, racerSpeed:racerSpeed);
+			_viewModel = new TypingVm(lessonString, UserInput, racerSpeed:racerSpeed);
 			_isSinglePlayer = true;
 			this.DataContext = _viewModel;
 			//_contentLength = 0;
 			UserInput.Focus();
 		}
 
-        internal MainWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
+        internal TypingWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
         {
 			InitializeComponent();
-			this.DataContext = new PrimaryVm(lessonString, UserInput, socket, isServer );
-			_viewModel = (PrimaryVm)DataContext;
+			this.DataContext = new TypingVm(lessonString, UserInput, socket, isServer );
+			_viewModel = (TypingVm)DataContext;
 			_isSinglePlayer = false;
 			ChangeLesson.Visibility = Visibility.Collapsed;
 			_isServer=isServer;			

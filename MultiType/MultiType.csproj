@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\BadLessonEntryException.cs" />
     <Compile Include="ViewModels\BaseVm.cs" />
     <Compile Include="ViewModels\MenuVm.cs" />
+    <Compile Include="ViewModels\LiveStatsVm.cs" />
     <Compile Include="Windows\LessonComplete.xaml.cs">
       <DependentUpon>LessonComplete.xaml</DependentUpon>
     </Compile>
@@ -88,7 +89,7 @@
     </Compile>
     <Compile Include="Models\LessonModel.cs" />
     <Compile Include="ViewModels\LessonVm.cs" />
-    <Compile Include="ViewModels\PrimaryVm.cs" />
+    <Compile Include="ViewModels\TypingVm.cs" />
     <Page Include="Resources\RoundedButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,7 +114,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="Windows\TypingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -121,13 +122,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Windows\TypingWindow.xaml.cs">
+      <DependentUpon>TypingWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\PrimaryModel.cs" />
+    <Compile Include="Models\TypingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

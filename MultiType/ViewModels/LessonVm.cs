@@ -141,7 +141,7 @@ namespace MultiType.ViewModels
         {
             if (IsSinglePlayer)
             {
-                ShowWindowAsDialog(host, new MainWindow(LessonString, RacerSpeed));
+                ShowWindowAsDialog(host, new TypingWindow(LessonString, RacerSpeed));
             }
             else
             {
