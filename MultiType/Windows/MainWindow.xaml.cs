@@ -117,7 +117,7 @@ namespace MultiType.Windows
                 else if (completeWindow.Result == Miscellaneous.DialogResult.New)
 				{
 					completeWindow.Close();
-					var window = new MiniLessonSelect();
+					var window = new SimpleLessonSelect();
 					if (window.ShowDialog() == true)
 					{
 						var lessonString = window.LessonString;

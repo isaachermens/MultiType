@@ -69,8 +69,8 @@
     <Compile Include="Windows\LessonComplete.xaml.cs">
       <DependentUpon>LessonComplete.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MiniLessonSelect.xaml.cs">
-      <DependentUpon>MiniLessonSelect.xaml</DependentUpon>
+    <Compile Include="Windows\SimpleLessonSelect.xaml.cs">
+      <DependentUpon>SimpleLessonSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ConnectModel.cs" />
     <Compile Include="Miscellaneous.cs" />
@@ -97,7 +97,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MiniLessonSelect.xaml">
+    <Page Include="Windows\SimpleLessonSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
