@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Documents;
 using MultiType.Commands;
 using MultiType.Models;
+using MultiType.Services;
 using MultiType.SocketsAPI;
 using MultiType.Windows;
 using PropertyChanged;
@@ -16,7 +17,7 @@ namespace MultiType.ViewModels
 	{
 		#region Private Fields
 
-		private LessonModel _model;
+		private LessonManagementService _managementService;
 		internal AsyncTcpClient asyncClient;
         private int _selectedLessonIndex;
 
@@ -35,39 +36,27 @@ namespace MultiType.ViewModels
 		public int RacerIndex { get; set; }
 
         [DependsOn("SelectedLessonIndex")]
-		public bool AllowEdit
-		{
-			get { return SelectedLessonIndex > 0; }
+		public bool AllowEdit { get { return SelectedLessonIndex > 0; }
 		}
+        [DependsOn("SelectedLessonIndex")]
+        public bool AllowChoose { get { return SelectedLessonIndex > 0; } }
 
-	    public string LessonNameEdit { get; set; }
+	    public string EditLessonName { get; set; }
 
-	    public string EditErrorText { get; set; }
+	    public string EditErrorMessage { get; set; }
 
-        public string LessonTextEdit { get; set; }
+        public string EditLessonContent { get; set; }
         
-		public bool ConnectionEstablished { get; set; }
-
-		public bool ShowPopup { get; set; }
-		
-        public string IpAddress { get; set; }
-
-		public string PortNum { get; set; }
-
 		public List<string> LessonNames { get; set; }
 
         [DependsOn("SelectedLessonIndex")]
         public string LessonName { get; set; }
-        public string CreateErrorText { get; set; }
-
-		public string LessonString { get; set; }
+        public string LessonContent { get; set; }
+        public string CreateErrorMessage { get; set; }
 
         public string NewLessonName { get; set; }
 
-        public string NewLessonText { get; set; }
-
-        [DependsOn("SelectedLessonIndex")]
-        public bool AllowChoose { get { return SelectedLessonIndex > 0; } }
+        public string NewLessonContent { get; set; }
 
         public bool IsEditing { get; set; }
 
@@ -76,20 +65,19 @@ namespace MultiType.ViewModels
 
         public bool IsCreating { get; set; }
 
-        // TODO definitely fix
 	    public int SelectedLessonIndex
 	    {
 	        get { return _selectedLessonIndex; }
 		    set
 		    {
 		        _selectedLessonIndex = value;
-		        if(_model==null) return;
+		        if(_managementService==null) return;
                 if (_selectedLessonIndex == 0) // the default option has been reselected, clear the lesson string
-		            LessonString = "";
+		            LessonContent = "";
 		        else
 		        {
                     var lessonName = LessonNames[_selectedLessonIndex];
-		            LessonString = _model.GetLessonText(lessonName);
+		            LessonContent = _managementService.GetLessonText(lessonName);
 		        }
 		    }
 		}
@@ -104,8 +92,8 @@ namespace MultiType.ViewModels
         {
             IsEditing = true;
             IsCreating = false;
-            LessonTextEdit = LessonString;
-            LessonNameEdit = LessonNames[SelectedLessonIndex];
+            EditLessonContent = LessonContent;
+            EditLessonName = LessonNames[SelectedLessonIndex];
         });} }
 
         public LambdaCommand SaveEdit { get { return new LambdaCommand(EditLesson);} }
@@ -129,32 +117,21 @@ namespace MultiType.ViewModels
 
         internal LessonVm()
 		{
-			_model = new LessonModel(this); // todo remove
-			LessonString = "";
-		    IpAddress = "";
-			PortNum = "";
+			_managementService = new LessonManagementService();
+			LessonContent = "";
 		    RacerSpeeds = new[] {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150};
 			RacerIndex = 5;
-		    LessonNames = _model.GetLessonNames();
+		    LessonNames = _managementService.GetLessonNames();
 		}
         private void ChooseLesson(Window host)
         {
             if (IsSinglePlayer)
             {
-                ShowWindowAsDialog(host, new TypingWindow(LessonString, RacerSpeed));
+                ShowWindowAsDialog(host, new TypingWindow(LessonContent, RacerSpeed));
             }
             else
             {
-                try
-                { //open a listen port and show the pending connection popup
-                    OpenConnectionPendingPopup();
-                    // when this method call returns, a connection has been received from another user
-                }
-                catch (Exception exc)
-                {
-                    // Todo make this not awful...probably with a dialog box
-                    LessonString = exc.Message;
-                }
+                ShowWindowAsDialog(host, new HostWindow(host, LessonContent));
             }
         }
 
@@ -162,26 +139,18 @@ namespace MultiType.ViewModels
         {
             IsEditing = false;
             IsCreating = false;
-            LessonTextEdit = "";
-            LessonNameEdit = "";
+            EditLessonContent = "";
+            EditLessonName = "";
             NewLessonName = "";
-            NewLessonText = "";
+            NewLessonContent = "";
         }
-
-		internal void OpenConnectionPendingPopup()
-		{
-			if (SelectedLessonIndex == 0 || LessonString == null)
-				throw new Exception("User must select a lesson before attempting to host the game.");
-			ShowPopup = true;			
-			_model.OpenListenSocket();
-		}
 
 		internal void CreateNewLesson()
 		{
 			try
 			{
-				_model.CreateNewLesson(NewLessonName, NewLessonText);
-			    LessonNames = _model.GetLessonNames();
+				_managementService.CreateNewLesson(NewLessonName, NewLessonContent);
+			    LessonNames = _managementService.GetLessonNames();
                 var index = LessonNames.IndexOf(LessonName, 0);
 			    if (index >= 0)
 			    {
@@ -191,23 +160,23 @@ namespace MultiType.ViewModels
 			}
 			catch (Exceptions.BadLessonEntryException e)
 			{
-				CreateErrorText = e.Message;
+				CreateErrorMessage = e.Message;
 			}
 		}
 
 	    internal void EditLesson()
 		{
 			try{
-				_model.EditLesson(LessonNames[SelectedLessonIndex], LessonNameEdit, LessonTextEdit);
-			    LessonNames = _model.GetLessonNames();
-				var index = LessonNames.IndexOf(LessonNameEdit, 0);
+				_managementService.EditLesson(LessonNames[SelectedLessonIndex], EditLessonName, EditLessonContent);
+			    LessonNames = _managementService.GetLessonNames();
+				var index = LessonNames.IndexOf(EditLessonName, 0);
 				if (index > -1)
 					SelectedLessonIndex = index;
                 ShowNormal();
 			}
 			catch (Exceptions.BadLessonEntryException e)
 			{
-				EditErrorText = e.Message;
+				EditErrorMessage = e.Message;
 			}
 		}
 
@@ -215,8 +184,8 @@ namespace MultiType.ViewModels
 		{
 		    if (MessageBox.Show("Are you sure you wish to delete this lesson?", "Confirm Deletion", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                _model.DeleteCurrentLesson(LessonNames[SelectedLessonIndex]);
-                LessonNames = _model.GetLessonNames();
+                _managementService.DeleteCurrentLesson(LessonNames[SelectedLessonIndex]);
+                LessonNames = _managementService.GetLessonNames();
                 SelectedLessonIndex = 0;
 		    }
 		}

@@ -35,7 +35,7 @@ namespace MultiType.Windows
         internal TypingWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
         {
 			InitializeComponent();
-			this.DataContext = new TypingVm(lessonString, UserInput, socket, isServer );
+			DataContext = new TypingVm(lessonString, UserInput, socket, isServer );
 			_viewModel = (TypingVm)DataContext;
 			_isSinglePlayer = false;
 			ChangeLesson.Visibility = Visibility.Collapsed;

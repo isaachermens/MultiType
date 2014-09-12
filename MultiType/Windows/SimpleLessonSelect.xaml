@@ -37,7 +37,7 @@
         <Border BorderBrush="LawnGreen"
                 BorderThickness="2" Padding="10">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TextBlock x:Name="LessonDisplay" Text="{Binding LessonString}" TextWrapping="Wrap" />
+                <TextBlock x:Name="LessonDisplay" Text="{Binding LessonContent}" TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
     </StackPanel>

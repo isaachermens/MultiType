@@ -143,7 +143,7 @@ namespace MultiType.ViewModels
 				_model._lessonString = value;
                 _model._adjustedLessonString = value.TrimEnd();
                 _model._lessonLength = _model._adjustedLessonString.Length;
-                NotifyPropertyChanged("LessonString");
+                NotifyPropertyChanged("LessonContent");
             }
         }
         public string TimeElapsed
