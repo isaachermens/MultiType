@@ -1,58 +1,42 @@
-﻿using MultiType.Models;
+﻿using System.Windows;
+using MultiType.Commands;
+using MultiType.Models;
 using System.ComponentModel;
+using PropertyChanged;
 
 namespace MultiType.ViewModels
 {
-	class ConnectVm: INotifyPropertyChanged
+    [ImplementPropertyChanged]
+	class ConnectVm : BaseVm
 	{
 		private readonly ConnectModel _model;
-		private string _ipAddr;
-		private string _portNumber;
-		private bool _connectionEstablished;
-		private string _inputError;
 		internal SocketsAPI.AsyncTcpClient asyncSocket;
 
-		public string InputError
-		{
-			get { return _inputError; }
-			set
-			{
-				_inputError = value;
-				NotifyPropertyChanged("InputError");
-			}
-		}
+        public RelayCommand<Window> Cancel { get { return new RelayCommand<Window>(w =>
+        {
+            w.DialogResult = true;
+            w.Close();
+        });} }
 
-		public bool ConnectionEstablished
-		{
-			get { return _connectionEstablished; }
-			set
-			{
-				_connectionEstablished = value;
-				NotifyPropertyChanged("ConnectionEstablished");
-			}
-		}
+        public LambdaCommand Connect { get { return new LambdaCommand(ConnectToServer);} }
 
-		public string IPAddress
-		{
-			get { return _ipAddr; }
-			set	{_ipAddr = value;}
-		}
-		public string PortNumber
-		{
-			get{return _portNumber;}
-			set{ _portNumber = value; }
-		}
+		public string InputError { get; set; }
+
+		public bool ConnectionEstablished { get; set; }
+
+        public string IpAddress { get; set; }
+
+        public int PortNumber { get; set; }
 
 		internal ConnectVm()
 		{
 			_model = new ConnectModel(this);
-			IPAddress = "";
-			_portNumber = "";
+			IpAddress = "";
 		}
 
 		internal void ConnectToServer()
 		{
-			_model.ConnectToServer(_ipAddr, _portNumber);
+			_model.ConnectToServer(IpAddress, PortNumber);
 		}
 
 		#region NPC Implementation

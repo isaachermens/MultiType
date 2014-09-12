@@ -1,4 +1,4 @@
-﻿<Window x:Class="MultiType.MainWindow"
+﻿<Window x:Class="MultiType.Windows.TypingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:my="clr-namespace:MultiType.ViewModels"

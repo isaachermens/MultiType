@@ -5,7 +5,7 @@ using MultiType.Models;
 
 namespace MultiType.ViewModels
 {
-    class PrimaryVm : INotifyPropertyChanged
+    class TypingVm : INotifyPropertyChanged
 	{
 		#region Peer Fields
 
@@ -20,7 +20,7 @@ namespace MultiType.ViewModels
 
 		#region Private Field
 
-		private PrimaryModel _model;
+		private TypingModel _model;
 		internal RichTextBox _userInput;
 		private string _popupText;
 		private bool _showPopup;
@@ -228,15 +228,15 @@ namespace MultiType.ViewModels
 
 		#endregion
 
-        public PrimaryVm(string lessonString, RichTextBox userInput, SocketsAPI.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
+        public TypingVm(string lessonString, RichTextBox userInput, SocketsAPI.AsyncTcpClient socket=null, bool isServer=false, int racerSpeed=0)
         {
 			if (socket == null)
 			{
-				_model = new PrimaryModel(this, isServer, racerSpeed);
+				_model = new TypingModel(this, isServer, racerSpeed);
 			}
 			else
 			{
-				_model = new PrimaryModel(this, isServer, racerSpeed, socket);
+				_model = new TypingModel(this, isServer, racerSpeed, socket);
 			}
 			_isServer = isServer;
 			_isMulti = socket != null;

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using MultiType.ViewModels;
 
-namespace MultiType
+namespace MultiType.Windows
 {
 	/// <summary>
 	/// Interaction logic for Menu.xaml
@@ -11,7 +11,7 @@ namespace MultiType
 		public Menu()
 		{
 			InitializeComponent();
-		    DataContext = new MenuVm(this);
+		    DataContext = new MenuVm();
 		}
 	}
 }

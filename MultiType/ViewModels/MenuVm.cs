@@ -1,32 +1,24 @@
 ﻿using System;
 using System.Windows;
 using MultiType.Commands;
+using MultiType.Windows;
 using PropertyChanged;
 
 namespace MultiType.ViewModels
 {
     public class MenuVm : BaseVm
     {
-        private readonly Window _host;
-
-        public LambdaCommand JoinGameCommand { get; set; }
-        public LambdaCommand HostGameCommand { get; set; }
-        public LambdaCommand PlayAloneCommand { get; set; }
+        public RelayCommand<Window> JoinGameCommand { get; set; }
+        public RelayCommand<Window> HostGameCommand { get; set; }
+        public RelayCommand<Window> PlayAloneCommand { get; set; }
         public LambdaCommand CloseAppCommand { get; set; }
 
-        public MenuVm(Window host)
+        public MenuVm()
         {
-            // Caller must provide a reference to the host window
-            if (host == null)
-            {
-                throw new ArgumentNullException();
-            }
-            _host = host;
-
-            JoinGameCommand = new LambdaCommand(()=>new ClientConnect(_host));
-            HostGameCommand = new LambdaCommand(()=>new LessonSelect(_host));
-            PlayAloneCommand = new LambdaCommand(()=>ShowWindowAsDialog(new LessonSelect(_host, true)));
-            CloseAppCommand = new LambdaCommand(()=>Application.Current.Shutdown());
+            JoinGameCommand = new RelayCommand<Window>(w => ShowWindowAsDialog(w, new ClientConnect(w)));
+            HostGameCommand = new RelayCommand<Window>(w => ShowWindowAsDialog(w, new LessonSelect(w)));
+            PlayAloneCommand = new RelayCommand<Window>(w => ShowWindowAsDialog(w, new LessonSelect(w, true)));
+            CloseAppCommand = new LambdaCommand(() =>Application.Current.Shutdown());
         }
     }
 }

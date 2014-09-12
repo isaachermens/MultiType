@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 using MultiType.ViewModels;
 using System.Net.Sockets;
 using System.Net;
@@ -18,7 +20,6 @@ namespace MultiType.Models
 		internal LessonModel(LessonVm viewModel)
 		{
 			_viewModel = viewModel;		
-			GetLessonNames();
 		}
 
 		/// <summary>
@@ -26,7 +27,7 @@ namespace MultiType.Models
 		/// Populate the lesson select combo box with the list of names through a databound property.
 		/// If the directory does not exist or some other error occurs, create a default list.
 		/// </summary>
-		private void GetLessonNames()
+		internal List<string> GetLessonNames()
 		{
 			// http://stackoverflow.com/questions/3259583/how-to-get-files-in-a-relative-path-in-c-sharp
 			_folderPath = "";
@@ -36,19 +37,16 @@ namespace MultiType.Models
 				var currentProcess = Process.GetCurrentProcess();
 				var fileName = currentProcess.MainModule.FileName;
 				_folderPath = Path.GetDirectoryName(fileName) + @"\Lessons\";
-				var filter = "*.txt"; // we want .txt files
-				string[] files = Directory.GetFiles(_folderPath, filter);
-				var lessonNames = new string[files.Length + 1]; // holds all lessons plus a default option
-				lessonNames[0] = "Select One..."; // default option
-				for (var i = 0; i < files.Length; i++)
-				{// strip the path and extension from each lesson name.
-					lessonNames[i + 1] = Path.GetFileNameWithoutExtension(files[i]);
-				}
-				_viewModel.LessonNames = lessonNames;
+				const string filter = "*.txt"; // we want only .txt files
+				var files = Directory.GetFiles(_folderPath, filter).ToList();
+				var lessonNames = new List<string>(); // holds all lessons plus a default option
+				lessonNames.Add("Select One..."); // default option
+			    files.ForEach(c => lessonNames.Add(Path.GetFileNameWithoutExtension(c)));
+				return lessonNames;
 			}
 			catch (Exception e)
 			{ // set property to default value.
-				_viewModel.LessonNames = new string[]{"Select One..."};
+				return new List<string>{"Select One..."};
 			}
 		}
 
@@ -104,7 +102,6 @@ namespace MultiType.Models
 				var text = Encoding.ASCII.GetBytes(lessonText);
 				fs.Write(text, 0, text.Length);
 			}
-			GetLessonNames(); // refresh the drop down list of lesson names
 		}
 
 		/// <summary>
@@ -137,11 +134,10 @@ namespace MultiType.Models
 				var text = Encoding.ASCII.GetBytes(newLessonText);
 				fs.Write(text, 0, text.Length);
 			}
-			GetLessonNames();// refresh the drop down list of lesson names
 		}
 
 		/// <summary>
-		/// Deletes the specified lesson and refreshes the list of lesson names.
+		/// Deletes the specified lesson
 		/// </summary>
 		/// <param name="lessonName">Name of the lesson to delete.</param>
 		internal void DeleteCurrentLesson(string lessonName)
@@ -151,7 +147,6 @@ namespace MultiType.Models
 				Directory.CreateDirectory(_folderPath);
 			if (File.Exists(fullPath))
 				File.Delete(fullPath);
-			GetLessonNames();
 		}	
 
 		private bool IsInvalidFileName(string fileName)
@@ -179,7 +174,7 @@ namespace MultiType.Models
 			var hostDns = Dns.GetHostEntry(Dns.GetHostName());
 			var ip = hostDns.AddressList.FirstOrDefault(c => c.AddressFamily.ToString().Equals("InterNetwork"));
 			if(ip==null) return; //todo throw an exception here?
-			_viewModel.IPAddress = ip.ToString(); // set databound IPaddress property
+			_viewModel.IpAddress = ip.ToString(); // set databound IPaddress property
 			//Reset the ManualReset event and begin async op to accept connection request
 			tcpClientConnected.Reset();
 			listener.BeginAcceptTcpClient(new AsyncCallback(AcceptClientConnection), listener);

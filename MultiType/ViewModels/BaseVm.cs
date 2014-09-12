@@ -7,17 +7,17 @@ namespace MultiType.ViewModels
     [ImplementPropertyChanged]
     public class BaseVm
     {
-        protected Window HostWindow { get; set; }
-        protected void ShowWindowAsDialog(Window target)
+        protected void ShowWindowAsDialog(Window host, Window target)
         {
-            HostWindow.Hide();
+            host.Hide();
             if (target.ShowDialog() == true)
             {
-                HostWindow.Show();
+                host.Show();
+                host.Activate();
             }
             else
             {
-                HostWindow.Close();
+                host.Close();
             }
         }
     }
