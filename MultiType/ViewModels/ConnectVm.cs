@@ -7,7 +7,7 @@ using PropertyChanged;
 namespace MultiType.ViewModels
 {
     [ImplementPropertyChanged]
-	class ConnectVm
+	class ConnectVm : BaseVm
 	{
 		private readonly ConnectModel _model;
 		internal SocketsAPI.AsyncTcpClient asyncSocket;
