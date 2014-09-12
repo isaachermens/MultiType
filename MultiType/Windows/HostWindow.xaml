@@ -1,0 +1,16 @@
+﻿<Window x:Class="MultiType.Windows.HostWindow"
+        x:Name="ServerHostWindow"
+        WindowStartupLocation="CenterOwner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="clr-namespace:MultiType.ViewModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        Title="Waiting For Players" Height="300" Width="300" d:DataContext="{d:DesignInstance Type=vm:HostVm}">
+    <StackPanel Orientation="Vertical">
+        <TextBlock TextWrapping="Wrap" Text="Tell your friend to enter the following IP Address and Port Number in order to connect to you."></TextBlock>
+        <Separator/>
+        <TextBlock Text="{Binding IpAddress, StringFormat=IP Address: {0}}"></TextBlock>
+        <TextBlock Text="{Binding PortNumber, StringFormat=Port Number: {0}}"></TextBlock>
+    </StackPanel>
+</Window>

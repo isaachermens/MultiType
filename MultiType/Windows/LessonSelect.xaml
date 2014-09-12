@@ -83,19 +83,5 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Popup Name="PendingConnection" IsOpen="{Binding ShowPopup}" Placement="Center">
-            <Border BorderBrush="White" BorderThickness="3,3,0,0">
-                <Border BorderBrush="Black" BorderThickness="1,1,3,3">
-                    <StackPanel Background="Honeydew">
-                        <Label FontSize="20" Content="{Binding IpAddress}"></Label>
-                        <Label FontSize="20" Content="{Binding PortNum}"></Label>
-                        <Label FontSize="20" Content="Waiting for a user to connect..." />
-                    </StackPanel>
-                </Border>
-            </Border>
-        </Popup>
-        <CheckBox Name="ConnectionEstablished" Visibility="Hidden" Content="" IsChecked="{Binding ConnectionEstablished}"
-                HorizontalAlignment="Left" Margin="101,229,0,0" VerticalAlignment="Top" Checked="ConnectionEstablished_Checked"
-                Height="16" Width="17" />
     </StackPanel>
 </Window>

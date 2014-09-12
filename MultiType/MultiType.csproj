@@ -64,9 +64,14 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\DatabindingDebugConverter.cs" />
     <Compile Include="Exceptions\BadLessonEntryException.cs" />
+    <Compile Include="Services\LessonManagementService.cs" />
     <Compile Include="ViewModels\BaseVm.cs" />
+    <Compile Include="ViewModels\HostVm.cs" />
     <Compile Include="ViewModels\MenuVm.cs" />
     <Compile Include="ViewModels\LiveStatsVm.cs" />
+    <Compile Include="Windows\HostWindow.xaml.cs">
+      <DependentUpon>HostWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\LessonComplete.xaml.cs">
       <DependentUpon>LessonComplete.xaml</DependentUpon>
     </Compile>
@@ -87,12 +92,15 @@
     <Compile Include="Windows\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\LessonModel.cs" />
     <Compile Include="ViewModels\LessonVm.cs" />
     <Compile Include="ViewModels\TypingVm.cs" />
     <Page Include="Resources\RoundedButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\HostWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\LessonComplete.xaml">
       <SubType>Designer</SubType>

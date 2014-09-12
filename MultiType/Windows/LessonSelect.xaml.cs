@@ -23,16 +23,5 @@ namespace MultiType.Windows
 		    DialogResult = true;
 			Close();
 		}
-
-        // todo burn this with FIRE
-		private void ConnectionEstablished_Checked(object sender, RoutedEventArgs e)
-		{
-			if (_viewModel == null && _viewModel.asyncClient!=null) return;
-			// connection has been established, open the primary window, passing in the peer socket
-			this.Visibility = Visibility.Hidden;
-			var window = new TypingWindow(_viewModel.asyncClient, _viewModel.LessonString, true);
-			window.Show();
-			this.Close();
-		}
 	}
 }

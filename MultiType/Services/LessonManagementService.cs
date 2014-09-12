@@ -1,26 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Documents;
-using MultiType.ViewModels;
-using System.Net.Sockets;
 using System.Net;
-using System.Threading;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using MultiType.ViewModels;
 
-namespace MultiType.Models
+namespace MultiType.Services
 {
-	class LessonModel
+	class LessonManagementService
 	{
-		private LessonVm _viewModel;
 		private string _folderPath; // path to the folder containing the executable
-		internal LessonModel(LessonVm viewModel)
-		{
-			_viewModel = viewModel;		
-		}
 
 		/// <summary>
 		/// Load a list of all lesson names from the Lessons directory located in the same directory as the executable file.
@@ -52,6 +46,7 @@ namespace MultiType.Models
 
 		/// <summary>
 		/// Read the contents of the .txt file with the specified lesson name. Exceptions are handled internally.
+		/// All white space characters in the file will be replaced with single spaces.
 		/// </summary>
 		/// <param name="lessonName">Name of the lesson to read text for.</param>
 		/// <returns></returns>
@@ -61,9 +56,9 @@ namespace MultiType.Models
 			var lessonText = "";
 			try
 			{
-				using (StreamReader sr = new StreamReader(_folderPath + fileName))
+				using (var reader = new StreamReader(_folderPath + fileName))
 				{
-					lessonText = sr.ReadToEnd();
+					lessonText = reader.ReadToEnd();
 					lessonText = Regex.Replace(lessonText, @"\s+", " ");
 				}
 			}
@@ -97,10 +92,10 @@ namespace MultiType.Models
 			var fullPath = _folderPath + lessonName + ".txt";
 			if (File.Exists(fullPath)) // remove file if it already exists, should not take place due to earlier checks
 				File.Delete(fullPath);
-			using (FileStream fs = File.Create(_folderPath + lessonName + ".txt"))
+			using (var file = File.Create(_folderPath + lessonName + ".txt"))
 			{ // create the new .txt file and write the lesson content.
 				var text = Encoding.ASCII.GetBytes(lessonText);
-				fs.Write(text, 0, text.Length);
+				file.Write(text, 0, text.Length);
 			}
 		}
 
@@ -129,10 +124,10 @@ namespace MultiType.Models
 				Directory.CreateDirectory(_folderPath);
 			if (File.Exists(fullPath))
 				File.Delete(fullPath);
-			using (FileStream fs = File.Create(_folderPath + newName + ".txt"))
+			using (var fileStream = File.Create(_folderPath + newName + ".txt"))
 			{
 				var text = Encoding.ASCII.GetBytes(newLessonText);
-				fs.Write(text, 0, text.Length);
+				fileStream.Write(text, 0, text.Length);
 			}
 		}
 
@@ -149,45 +144,14 @@ namespace MultiType.Models
 				File.Delete(fullPath);
 		}	
 
-		private bool IsInvalidFileName(string fileName)
+		private static bool IsInvalidFileName(string fileName)
 		{
 			return fileName.IndexOfAny(Path.GetInvalidFileNameChars(), 0, fileName.Length) != -1;
 		}
 
 		private bool LessonNameInUse(string lessonName)
 		{
-			return _viewModel.LessonNames.Contains(lessonName);
-		}
-
-		public static ManualResetEvent tcpClientConnected =	new ManualResetEvent(false);
-
-		internal void OpenListenSocket()
-		{
-			// Create a TCPListener socket to wait for a peer/client to connect
-			var listener = new TcpListener(IPAddress.Any, 0);
-			listener.Start();
-			// extract the port number of the listener
-			var endPoint = (IPEndPoint)listener.LocalEndpoint;
-			_viewModel.PortNum = endPoint.Port.ToString();
-			// get the local computer IPv4 address. This method of retrieving the IP address will have difficulties if a computer
-			// has multiple IPv4 addresses
-			var hostDns = Dns.GetHostEntry(Dns.GetHostName());
-			var ip = hostDns.AddressList.FirstOrDefault(c => c.AddressFamily.ToString().Equals("InterNetwork"));
-			if(ip==null) return; //todo throw an exception here?
-			_viewModel.IpAddress = ip.ToString(); // set databound IPaddress property
-			//Reset the ManualReset event and begin async op to accept connection request
-			tcpClientConnected.Reset();
-			listener.BeginAcceptTcpClient(new AsyncCallback(AcceptClientConnection), listener);
-		}
-
-		public void AcceptClientConnection(IAsyncResult ar)
-		{
-			var listener = (TcpListener)ar.AsyncState; // cast the result to a TcpListener
-			var client = listener.EndAcceptTcpClient(ar); // stop listening for clients
-			_viewModel.asyncClient = new SocketsAPI.AsyncTcpClient(client); // create an asynchronous tcp socket using the tcp client socket.
-			listener.Stop(); // kill the listener
-			tcpClientConnected.Set(); // set the data bound
-			_viewModel.ConnectionEstablished = true;
+			return GetLessonNames().Contains(lessonName);
 		}
 	}
 }
