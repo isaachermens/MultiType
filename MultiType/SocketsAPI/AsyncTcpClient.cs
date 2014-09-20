@@ -7,24 +7,8 @@ using MultiType.ViewModels;
 
 namespace MultiType.SocketsAPI
 {
-    public class StatsReceivedEventArgs : EventArgs
-    {
-        public UserStatistics StatsUpdate { get; set; }
-    }
 
-    public class ContentReceivedEventArgs : EventArgs
-    {
-        public string Content { get; set; }
-    }
-
-    public interface IGameController
-    {
-        Action<bool> SetPauseState { get; set; }
-        Action<string,bool> NewLesson { get; set; }
-        Action<bool> RepeatLesson { get; set; }
-    }
-
-    public interface IAsyncTcpClient : IUpdateContent, IUpdateStats, IGameController
+    public interface IAsyncTcpClient
     {
         /// <summary>
         /// Encodes a serializable object and writes it to the network stream
@@ -57,44 +41,16 @@ namespace MultiType.SocketsAPI
 
         void ReadPacket(SerializeBase packet);
         SerializeBase ReadData { get; set; }
+        IPacketParser Parser { get; set; }
     }
 
-    public interface IUpdateStats
-    {
-        event EventHandler<StatsReceivedEventArgs> StatsReceived;
-
-        void OnStatsReceived(UserStatistics s);
-    }
-
-    public interface IUpdateContent
-    {
-        event EventHandler<ContentReceivedEventArgs> ContentReceived;
-
-        void OnContentReceived(string content);
-    }
-
-    // Todo move application specific logic/functionality into a service class of some sort
     public class AsyncTcpClient : IAsyncTcpClient
     {
         private readonly TcpClient _tcpClient;
-        // todo burn with fire
+        public IPacketParser Parser { get; set; }
+
         public SerializeBase ReadData { get; set; }
 
-        public Action<bool> SetPauseState { get; set; }
-        public Action<string,bool> NewLesson { get; set; }
-        public Action<bool> RepeatLesson { get; set; }
-
-        public event EventHandler<StatsReceivedEventArgs> StatsReceived = delegate { };
-        public void OnStatsReceived(UserStatistics s)
-        {
-            StatsReceived(this, new StatsReceivedEventArgs { StatsUpdate = s });
-        }
-
-        public event EventHandler<ContentReceivedEventArgs> ContentReceived = delegate{};
-        public void OnContentReceived(string content)
-        {
-            ContentReceived(this, new ContentReceivedEventArgs { Content = content });
-        }
 
         /// <summary>
         /// Construct a new client from a provided IP address and port
@@ -112,9 +68,6 @@ namespace MultiType.SocketsAPI
         internal AsyncTcpClient(TcpClient client)
         {
             _tcpClient = client;
-            SetPauseState = delegate { };
-            NewLesson = delegate { };
-            RepeatLesson = delegate { };
         }
 
         /// <summary>
@@ -195,37 +148,8 @@ namespace MultiType.SocketsAPI
 
         public void ReadPacket(SerializeBase packet)
         {
-            // todo can we replace the fields being checked with the is operator?
-            if (packet.IsUserStatictics)
-            { // use the data contained in the stats packet to update the peer databound properties in the view model
-                var stats = (UserStatistics)packet;
-                OnStatsReceived(stats);
-                OnContentReceived(stats.TypedContent);
-            }
-            else if (packet.IsCommand)
-            {
-                var command = (Command)packet;
-                //if (command.IsGameComplete) // alert the model that the game is complete
-                //    // todo fix Model.GameIsComplete(false);
-                //else if (command.IsPauseCommand)
-                //{
-                //    // todo fix Model.TogglePauseMulti(false);
-                //    SetPauseState(command.GameHasStarted);
-                //}
-                //else if (command.StartCommand)
-                //    // todo fix Model.StartGame(false, null); //command.StartTime, command.StopTime);
-                //else if (command.IsResetCommand && command.ResetIsNewLesson)
-                //{
-                //    //_model.SendStatsPacket();
-                //    // clear the lesson string and wait until the new lesson string is received from teh server
-                //    NewLesson(command.LessonText, false);
-                //}
-                //else if (command.IsResetCommand && command.ResetIsRepeatedLesson)
-                //{
-                //    //_model.SendStatsPacket();
-                //    RepeatLesson(false);
-                //}
-            }
+            if (Parser == null) return;
+            Parser.HandlePacket(packet);
         }
     }
 }

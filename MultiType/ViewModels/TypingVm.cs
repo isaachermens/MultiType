@@ -121,22 +121,28 @@ namespace MultiType.ViewModels
             RemoteStats = remote;
             if (socket != null && remote != null)
             {
-                socket.ContentReceived += (obj, args) => PeerTypedContent = args.Content;
-                socket.StatsReceived += (obj, args) => remote.UpdateStats(args.StatsUpdate);
+                var contentNotify = new ContentNotify();
+                var statsNotify = new StatsNotify();
+                var controller = RegisterCommandCallbacks();
+                contentNotify.ContentReceived += (obj, args) => PeerTypedContent = args.Content;
+                statsNotify.StatsReceived += (obj, args) => remote.UpdateStats(args.StatsUpdate);
+                socket.Parser = new MultiTypeParser(controller, statsNotify, contentNotify);
             }
 			_model = new TypingModel(this, isServer, racerSpeed, socket);
 			_isServer = isServer;
 			_isMulti = socket != null;
 			_userInput = userInput;
 			InitiallizeViewModel(lessonString);
-            RegisterCommandCallbacks(socket);
         }
 
-        private void RegisterCommandCallbacks(IGameController controller)
+        private IGameController RegisterCommandCallbacks()
         {
-            controller.NewLesson = NewLesson;
-            controller.RepeatLesson = RepeatLesson;
-            controller.SetPauseState = (gameRunning) => _isGameRunning = gameRunning;
+           return new GameController
+            {
+                NewLesson = NewLesson,
+                RepeatLesson = RepeatLesson,
+                SetPauseState = (gameRunning) => _isGameRunning = gameRunning
+            };
         }
 
 		/// <summary>
