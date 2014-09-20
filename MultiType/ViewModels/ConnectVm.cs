@@ -10,8 +10,8 @@ namespace MultiType.ViewModels
 {
     [ImplementPropertyChanged]
 	class ConnectVm : BaseVm
-	{
-		private readonly SocketConnectionService _connectService = new SocketConnectionService();
+    {
+        private readonly ISocketConnectionService _connectService;
 		private SocketsAPI.AsyncTcpClient _socket;
         private readonly Window _host;
 
@@ -31,8 +31,9 @@ namespace MultiType.ViewModels
 
         public int PortNumber { get; set; }
 
-		internal ConnectVm(Window hostWindow)
+		internal ConnectVm(Window hostWindow, ISocketConnectionService service)
 		{
+		    _connectService = service;
 			IpAddress = "";
 		    _host = hostWindow;
 		}

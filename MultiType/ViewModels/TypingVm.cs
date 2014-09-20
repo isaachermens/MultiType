@@ -5,7 +5,7 @@ using MultiType.Models;
 
 namespace MultiType.ViewModels
 {
-    class TypingVm : INotifyPropertyChanged
+    public class TypingVm : INotifyPropertyChanged
 	{
 		#region Peer Fields
 

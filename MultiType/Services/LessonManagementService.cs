@@ -3,17 +3,54 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using MultiType.ViewModels;
 
 namespace MultiType.Services
 {
-	class LessonManagementService
-	{
+    public interface ILessonManagementService
+    {
+        /// <summary>
+        /// Load a list of all lesson names from the Lessons directory located in the same directory as the executable file.
+        /// Populate the lesson select combo box with the list of names through a databound property.
+        /// If the directory does not exist or some other error occurs, create a default list.
+        /// </summary>
+        List<string> GetLessonNames();
+
+        /// <summary>
+        /// Read the contents of the .txt file with the specified lesson name. Exceptions are handled internally.
+        /// All white space characters in the file will be replaced with single spaces.
+        /// </summary>
+        /// <param name="lessonName">Name of the lesson to read text for.</param>
+        /// <returns></returns>
+        string GetLessonText(string lessonName);
+
+        /// <summary>
+        /// Create a new lesson with the provided name and content.
+        /// Throws BadLessonEntryException if either parameter is invalid.
+        /// </summary>
+        /// <param name="lessonName">Name of lesson to create.</param>
+        /// <param name="lessonText">Content of lesson to create.</param>
+        void CreateNewLesson(string lessonName, string lessonText);
+
+        /// <summary>
+        /// Very similar function to CreateLesson() method. Simply allows for modification of a lesson instead of creation of a new lesson.
+        /// Process is similar: the old file is deleted and a new one is created with the new lesson text.
+        /// </summary>
+        /// <param name="oldName">Previous name of the lesson</param>
+        /// <param name="newName">Editted of the lesson</param>
+        /// <param name="newLessonText">Editted content of the lesson.</param>
+        void EditLesson(string oldName, string newName, string newLessonText);
+
+        /// <summary>
+        /// Deletes the specified lesson
+        /// </summary>
+        /// <param name="lessonName">Name of the lesson to delete.</param>
+        void DeleteLesson(string lessonName);
+    }
+
+    public class LessonManagementService : ILessonManagementService
+    {
 		private string _folderPath; // path to the folder containing the executable
 
 		/// <summary>
@@ -21,7 +58,7 @@ namespace MultiType.Services
 		/// Populate the lesson select combo box with the list of names through a databound property.
 		/// If the directory does not exist or some other error occurs, create a default list.
 		/// </summary>
-		internal List<string> GetLessonNames()
+		public List<string> GetLessonNames()
 		{
 			// http://stackoverflow.com/questions/3259583/how-to-get-files-in-a-relative-path-in-c-sharp
 			_folderPath = "";
@@ -33,8 +70,7 @@ namespace MultiType.Services
 				_folderPath = Path.GetDirectoryName(fileName) + @"\Lessons\";
 				const string filter = "*.txt"; // we want only .txt files
 				var files = Directory.GetFiles(_folderPath, filter).ToList();
-				var lessonNames = new List<string>(); // holds all lessons plus a default option
-				lessonNames.Add("Select One..."); // default option
+				var lessonNames = new List<string> {"Select One..."}; // holds all lessons plus a default option
 			    files.ForEach(c => lessonNames.Add(Path.GetFileNameWithoutExtension(c)));
 				return lessonNames;
 			}
@@ -50,7 +86,7 @@ namespace MultiType.Services
 		/// </summary>
 		/// <param name="lessonName">Name of the lesson to read text for.</param>
 		/// <returns></returns>
-		internal string GetLessonText(string lessonName)
+		public string GetLessonText(string lessonName)
 		{
 			var fileName = lessonName + ".txt";
 			var lessonText = "";
@@ -75,7 +111,7 @@ namespace MultiType.Services
 		/// </summary>
 		/// <param name="lessonName">Name of lesson to create.</param>
 		/// <param name="lessonText">Content of lesson to create.</param>
-		internal void CreateNewLesson(string lessonName, string lessonText)
+		public void CreateNewLesson(string lessonName, string lessonText)
 		{
 			lessonText = Regex.Replace(lessonText, @"\s+", " "); // replace all whitespace characters with single spaces. Prevents double spaces, tabs, linebreaks, etc. from appearing in the lesson.
 			var errorString = ""; // initiallize error string.
@@ -83,7 +119,7 @@ namespace MultiType.Services
 				errorString += "Please enter text for both the name and content of the lesson.\r\n";
 			else if (LessonNameInUse(lessonName)) // if the specified lesson name is already being used, modify error string
 				errorString += "Enter a lesson name that is not already in use.\r\n";
-			else if (IsInvalidFileName(lessonName)) // if the lesson name contains any illegal characters, modify error string
+			else if (!IsValidFileName(lessonName)) // if the lesson name contains any illegal characters, modify error string
 				errorString += "Please enter a file name that does not contain illegal characters: ";
 			if (errorString != "") // throw BadLessonEntryException if the error string has been modified
 				throw new Exceptions.BadLessonEntryException(errorString);
@@ -106,7 +142,7 @@ namespace MultiType.Services
 		/// <param name="oldName">Previous name of the lesson</param>
 		/// <param name="newName">Editted of the lesson</param>
 		/// <param name="newLessonText">Editted content of the lesson.</param>
-		internal void EditLesson(string oldName, string newName, string newLessonText)
+		public void EditLesson(string oldName, string newName, string newLessonText)
 		{
 			newLessonText = Regex.Replace(newLessonText, @"\s+", " ");
 			var errorString = "";
@@ -114,7 +150,7 @@ namespace MultiType.Services
 				errorString += "Please enter text for both the name and content of the lesson.\r\n";
 			else if (LessonNameInUse(newName) && newName != oldName)
 				errorString += "Enter a lesson name that is not already in use.\r\n";
-			else if (IsInvalidFileName(newName))
+			else if (!IsValidFileName(newName))
 				errorString += "Please enter a file name that does not contain illegal characters: ";
 			if (errorString != "")
 				throw new Exceptions.BadLessonEntryException(errorString);
@@ -135,7 +171,7 @@ namespace MultiType.Services
 		/// Deletes the specified lesson
 		/// </summary>
 		/// <param name="lessonName">Name of the lesson to delete.</param>
-		internal void DeleteCurrentLesson(string lessonName)
+		public void DeleteLesson(string lessonName)
 		{
 			var fullPath = _folderPath + lessonName + ".txt";
 			if (!Directory.Exists(_folderPath))
@@ -144,7 +180,7 @@ namespace MultiType.Services
 				File.Delete(fullPath);
 		}	
 
-		private static bool IsInvalidFileName(string fileName)
+		private static bool IsValidFileName(string fileName)
 		{
 			return fileName.IndexOfAny(Path.GetInvalidFileNameChars(), 0, fileName.Length) != -1;
 		}

@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
+using MultiType.Ninject;
+using MultiType.Services;
 using MultiType.ViewModels;
+using Ninject;
 
 namespace MultiType.Windows
 {
@@ -14,7 +18,7 @@ namespace MultiType.Windows
 		public SimpleLessonSelect()
 		{
 			InitializeComponent();
-			DataContext = new LessonVm();
+            DataContext = new LessonVm(new StandardKernel(new NinjectBindings()).Get<ILessonManagementService>());
 		}
 
 	    private void Choose_OnClick(object sender, RoutedEventArgs e)

@@ -2,7 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MultiType.Ninject;
+using MultiType.Services;
 using MultiType.ViewModels;
+using Ninject;
 
 namespace MultiType.Windows
 {
@@ -16,7 +19,7 @@ namespace MultiType.Windows
 			// set up the window and its data context
 		    Owner = owner;
 			InitializeComponent();
-            DataContext = new ConnectVm(this);
+            DataContext = new ConnectVm(this, new StandardKernel(new NinjectBindings()).Get<ISocketConnectionService>());
 		}
 
 		/// <summary>

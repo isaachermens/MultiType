@@ -18,8 +18,8 @@ namespace MultiType.ViewModels
     public class HostVm : BaseVm
     {
         private static readonly ManualResetEvent TcpClientConnected = new ManualResetEvent(false);
-        private Window _host;
-        private string _lessonContent;
+        private readonly Window _host;
+        private readonly string _lessonContent;
 
         public string IpAddress { get; set; }
 
