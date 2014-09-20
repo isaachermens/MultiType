@@ -17,9 +17,9 @@ namespace MultiType.Models
 		internal int _WPM; // tracks WPM
 		internal int _errors; // stores the current number of errors
 		internal int _charactersTyped; // stores the total number of characters typed; never decremented, only incremented
-		internal string _completionPercent; // stores the display string for % completion
+		internal int _completionPercent; // stores the display string for % completion
 		internal int _totalErrors; // used to track the total number of errors comitted; never decremented, only incremented
-		internal string _accuracy; // stores the display string for accuracy percentage
+		internal int _accuracy; // stores the display string for accuracy percentage
 		internal string _timeElapsed; // stores the time elapsed
 
 		internal int _lessonLength; // stores the length of the lesson, adjusted to remove the trailing CRLF
@@ -51,8 +51,6 @@ namespace MultiType.Models
 			{
 				_isMulti = true;
 				_socket = socket;
-				_socket.Model = this;
-				_socket.ViewModel = _viewModel;
 				_isServer = isServer;
 			}
 		}
@@ -135,10 +133,10 @@ namespace MultiType.Models
             var wpmMinutes = (double)_stopwatch.ElapsedMilliseconds / 60000;
 			if (_typedContent == null) return;
             var words = (double)_typedContent.Length / 5; //A word is defined as 5 characters
-            if (words != 0.0 && wpmMinutes >= .01)
-                _viewModel.WPM = Math.Floor(words / wpmMinutes).ToString();
-            else
-                _viewModel.WPM = "0";
+            //if (words != 0.0 && wpmMinutes >= .01)
+            //    // todo _viewModel.WPM = Math.Floor(words / wpmMinutes).ToString();
+            //else
+            //    todo _viewModel.WPM = "0";
 			if(_isMulti) SendStatsPacket(); // in multiplayer games, send a stats packet to your peer.
         }
 
@@ -152,14 +150,14 @@ namespace MultiType.Models
 			//If a new character has been typed (as opposed to character(s) deleted).
 			if (_typedContent.Length > _previousContentLength)
 			{
-				_viewModel.CharactersTyped = (_charactersTyped + 1).ToString(); // increment the number of characters typed
+				// todo _viewModel.CharactersTyped = (_charactersTyped + 1).ToString(); // increment the number of characters typed
 				// prevent crashes from overrunning the lesson content
 				if (_typedContent.Length > _lessonLength) return;
 				var correct = _lessonString[_typedContent.Length - 1]; // retrieve the correct value from the lesson string
 				var typed = _typedContent[_typedContent.Length - 1]; // retrive the value that was typed from the typed material
 				if (typed!=correct)
 				{ // if an error has been entered, increment both error counters and check if highlighting needs to occur
-					_viewModel.Errors = (_errors + 1).ToString();
+					// todo _viewModel.Errors = (_errors + 1).ToString();
 					_totalErrors++;
 					if (_lastCharError == false)
 					{ // if this is not a repeated error, 
@@ -199,7 +197,7 @@ namespace MultiType.Models
 				// I can't find the bug or reproduce it at will, so this is a stopgap measure.
 				if (_errors < 0)
 					_errors = 0;
-				_viewModel.Errors = _errors.ToString();
+				// todo _viewModel.Errors = _errors.ToString();
 				_lastCharEdit = true; // set flag to indicate that text has been deleted
 			}
 			_previousContentLength = _typedContent.Length;  //update the value for the next round
@@ -213,8 +211,8 @@ namespace MultiType.Models
 		internal void CalculateCompletionPercentage()
 		{
 			// Determine whether or not the user has finished, and calculate the completion percentage,
-            _viewModel.CompletionPercentage = _typedContent.Length + "/" + _lessonLength + " = " + Math.Floor(
-                ((double)_typedContent.Length / _lessonLength) * 100) + "% Complete";
+            // todo _viewModel.CompletionPercentage = _typedContent.Length + "/" + _lessonLength + " = " + Math.Floor(
+               //  ((double)_typedContent.Length / _lessonLength) * 100) + "% Complete";
             if (_typedContent.Length >= _lessonLength)
             { // user is finished
 				GameIsComplete();
@@ -238,11 +236,11 @@ namespace MultiType.Models
 		{
 			//Calculate the user's accuracy. Determind by dividing the total number of characters they have typed correctly by the total number of characters typed
             var difference = _charactersTyped - _totalErrors;
-            if(_typedContent.Length>0)
-                _viewModel.Accuracy = difference + "/" + _charactersTyped + " = " + (Math.Floor(((double)(difference) / _charactersTyped) 
-                    * 100)).ToString() + "%";
-            else
-                _viewModel.Accuracy="0/0 = 0%";
+            //if(_typedContent.Length>0)
+            //   // todo  _viewModel.Accuracy = difference + "/" + _charactersTyped + " = " + (Math.Floor(((double)(difference) / _charactersTyped) 
+            //        // * 100)).ToString() + "%";
+            //else
+            //    // todo _viewModel.Accuracy="0/0 = 0%";
 		}
 
 		/// <summary>
@@ -280,7 +278,6 @@ namespace MultiType.Models
 		/// <returns></returns>
 		internal bool TogglePauseMulti(bool isLocalCall)
 		{
-			if (_viewModel.gameHasStarted == false) return true;
 			if (isLocalCall) SendPauseCommand(); // only send a pause command if the pause was initiated here
 			
 			var currentState = _stopwatch.IsRunning;
@@ -330,7 +327,7 @@ namespace MultiType.Models
 		/// Begin the game after a delay of 5 seconds
 		/// </summary>
 		/// <param name="isLocalCall">Is this being called from the view model or upon receipt of a start command from the host?</param>
-		internal void StartGame(bool isLocalCall)
+		internal void StartGame(bool isLocalCall, Action<bool> setRunningState)
 		{
 			if (isLocalCall) // only want to send a start command packet if this is called locally, not upon received of a packet
 				SendStartCommand();
@@ -351,7 +348,8 @@ namespace MultiType.Models
 			_viewModel.PopupCountdown = "";
 			_stopwatch.Start();
 			_timer.Start();
-			_viewModel.gameHasStarted = true;
+		    if (setRunningState != null)
+		        setRunningState(true);
 			_viewModel.RTBReadOnly = false;
 		}
 
@@ -406,9 +404,8 @@ namespace MultiType.Models
 				IsLessonText = false,
 				IsUserStatictics = false,
 				IsPauseCommand = true,
-				//PauseGame = gameIsPaused,
 				IsGameComplete = false,
-				GameHasStarted = _viewModel.gameHasStarted,
+				GameHasStarted = false, // todo
 			};
 			_socket.Write(pauseCommand);
 		}

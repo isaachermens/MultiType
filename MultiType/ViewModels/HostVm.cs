@@ -58,7 +58,7 @@ namespace MultiType.ViewModels
             var socket = new AsyncTcpClient(client); // create an asynchronous tcp socket using the tcp client socket.
             listener.Stop(); // kill the listener
             TcpClientConnected.Set(); // set the data bound
-            ShowWindowAsDialog(_host, new TypingWindow(socket, _lessonContent, true));
+            ShowWindowAsDialog(_host, new TypingWindow(_lessonContent, socket, true));
         }
     }
 }

@@ -52,10 +52,10 @@ namespace MultiType.SocketsAPI
     [Serializable]
     public class UserStatistics : SerializeBase
     {
-        public string CompletionPercentage;
+        public int CompletionPercentage;
         public string TypedContent;
         public int CharactersTyped;
-        public string Accuracy;
+        public int Accuracy;
         public int Errors;
         public int WPM;
     }

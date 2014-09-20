@@ -43,7 +43,7 @@ namespace MultiType.ViewModels
 		    var error = string.Empty;
 		    if (_connectService.TryConnectToServer(IpAddress, PortNumber, ref _socket, ref error))
 		    {
-		        ShowWindowAsDialog(_host, new TypingWindow(_socket, ""));
+		        ShowWindowAsDialog(_host, new TypingWindow("", _socket));
 		    }
 		    else
 		    {
