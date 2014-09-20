@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace MultiType.Models
 {
-	internal class TypingModel
+	public class TypingModel
 	{
 		#region Private Fields
 
@@ -31,7 +31,7 @@ namespace MultiType.Models
 		private int _currentRacerIndex; // stores the current location of the racer in single player games
 		internal Stopwatch _stopwatch; // stopwatch used to track time elapsed and calculate WPM
 		private TypingVm _viewModel; // reference to the view model
-		private AsyncTcpClient _socket; // stores the asynchronous TcpClient used to send and receive data to peer in multiplayer
+		private IAsyncTcpClient _socket; // stores the asynchronous TcpClient used to send and receive data to peer in multiplayer
 		private bool _isMulti; // stores whether the game is multiplayer or not
 		private bool _isServer; // for multiplayer games, stores whether this is the host or client
 		private bool _initiatedPause; // tracks whether this instance initiated a pause in the game.
@@ -41,7 +41,7 @@ namespace MultiType.Models
 
 		#endregion 
 
-		internal TypingModel(TypingVm viewModel, bool isServer, int racerSpeed, AsyncTcpClient socket = null)
+		internal TypingModel(TypingVm viewModel, bool isServer, int racerSpeed, IAsyncTcpClient socket = null)
 		{
 			_viewModel = viewModel;
 			_racerSpeed = racerSpeed;
@@ -51,8 +51,8 @@ namespace MultiType.Models
 			{
 				_isMulti = true;
 				_socket = socket;
-				_socket._model = this;
-				_socket._viewModel = _viewModel;
+				_socket.Model = this;
+				_socket.ViewModel = _viewModel;
 				_isServer = isServer;
 			}
 		}
@@ -62,7 +62,7 @@ namespace MultiType.Models
             _stopwatch = new Stopwatch();
 			// Initiallize the timer used to track WPM and transmit UserStatistics packets
 			_timer = new Timer();
-            _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            _timer.Elapsed += OnTimedEvent;
             _timer.Interval = 500;
 			// initiate private fields referred to by databound properties and used for calculations
             _typedContent = "";
@@ -78,7 +78,7 @@ namespace MultiType.Models
 				_racerTimer = new Timer();
 				var cpm = _racerSpeed * 5;
 				var millisecondsPerChar = 60000.0 / cpm;
-				_timer.Elapsed+=new ElapsedEventHandler(RacerTrigger);
+			    _timer.Elapsed += RacerTrigger;
 				_timer.Interval = millisecondsPerChar;
 			}
 			else if (_isServer)
@@ -94,7 +94,7 @@ namespace MultiType.Models
 				_lessonLength = 0;
 				while (_lessonLength == 0)
 				{
-					var read = _socket.readData;
+					var read = _socket.ReadData;
 					if(read != null && read.IsLessonText)
 						_viewModel.LessonString = ((LessonText)read).Lesson;
 				}

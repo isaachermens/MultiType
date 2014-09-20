@@ -6,8 +6,21 @@ using System.Net.Sockets;
 
 namespace MultiType.Services
 {
-	class SocketConnectionService
-	{
+    internal interface ISocketConnectionService
+    {
+        /// <summary>
+        /// Attempt to connect to the hosting application given an IP Address and port #.
+        /// If an error occurs, sets text in an error div in the ClientConnect window using the InputError databount property.
+        /// </summary>
+        /// <param name="ipAddr">IP address of the host.</param>
+        /// <param name="port">Port number of the host application.</param>
+        /// <param name="socket">reference parameter to hold a sucessful socket connection</param>
+        /// <param name="errorMessage">Description of any errors that occur</param>
+        bool TryConnectToServer(string ipAddr, int port, ref AsyncTcpClient socket, ref string errorMessage);
+    }
+
+    class SocketConnectionService : ISocketConnectionService
+    {
 	    private static bool IsValidPort(int port)
 	    {
 	        return port >= 1024 && port <= 65535;
@@ -21,7 +34,7 @@ namespace MultiType.Services
 	    /// <param name="port">Port number of the host application.</param>
 	    /// <param name="socket">reference parameter to hold a sucessful socket connection</param>
 	    /// <param name="errorMessage">Description of any errors that occur</param>
-	    internal bool TryConnectToServer(string ipAddr, int port, ref AsyncTcpClient socket, ref string errorMessage)
+	    public bool TryConnectToServer(string ipAddr, int port, ref AsyncTcpClient socket, ref string errorMessage)
 		{
 			//initiallize the error string
 			const string defaultError = "An error has occured."; 

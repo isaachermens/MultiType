@@ -17,8 +17,8 @@ namespace MultiType.ViewModels
 	{
 		#region Private Fields
 
-		private LessonManagementService _managementService;
-		internal AsyncTcpClient asyncClient;
+        private readonly ILessonManagementService _managementService;
+		private AsyncTcpClient _asyncClient;
         private int _selectedLessonIndex;
 
 		#endregion
@@ -71,7 +71,6 @@ namespace MultiType.ViewModels
 		    set
 		    {
 		        _selectedLessonIndex = value;
-		        if(_managementService==null) return;
                 if (_selectedLessonIndex == 0) // the default option has been reselected, clear the lesson string
 		            LessonContent = "";
 		        else
@@ -115,14 +114,15 @@ namespace MultiType.ViewModels
         public LambdaCommand DeleteCurrent { get { return new LambdaCommand(DeleteCurrentLesson);} }
         #endregion // Commands
 
-        internal LessonVm()
+        public  LessonVm(ILessonManagementService service)
 		{
-			_managementService = new LessonManagementService();
+            _managementService = service;
 			LessonContent = "";
 		    RacerSpeeds = new[] {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150};
 			RacerIndex = 5;
 		    LessonNames = _managementService.GetLessonNames();
 		}
+
         private void ChooseLesson(Window host)
         {
             if (IsSinglePlayer)
@@ -184,7 +184,7 @@ namespace MultiType.ViewModels
 		{
 		    if (MessageBox.Show("Are you sure you wish to delete this lesson?", "Confirm Deletion", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                _managementService.DeleteCurrentLesson(LessonNames[SelectedLessonIndex]);
+                _managementService.DeleteLesson(LessonNames[SelectedLessonIndex]);
                 LessonNames = _managementService.GetLessonNames();
                 SelectedLessonIndex = 0;
 		    }

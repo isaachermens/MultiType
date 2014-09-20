@@ -5,12 +5,50 @@ using MultiType.ViewModels;
 
 namespace MultiType.SocketsAPI
 {
-	internal class AsyncTcpClient
-	{
-        private TcpClient _tcpClient;
-		internal TypingVm _viewModel;
-		internal TypingModel _model;
-		internal SerializeBase readData;
+    public interface IAsyncTcpClient
+    {
+        /// <summary>
+        /// Encodes a serializable object and writes it to the network stream
+        /// </summary>
+        /// <param name="data">The serializable object to serialize and write</param>
+        void Write(object data);
+
+        /// <summary>
+        /// Writes an array of bytes to the network.
+        /// </summary>
+        /// <param name="bytes">The array to write</param>
+        void Write(byte[] bytes);
+
+        /// <summary>
+        /// Callback for Write operation
+        /// </summary>
+        /// <param name="result">The AsyncResult object</param>
+        void WriteCallback(IAsyncResult result);
+
+        /// <summary>
+        /// Start read operations
+        /// </summary>
+        void BeginReading();
+
+        /// <summary>
+        /// Callback for Read operation
+        /// </summary>
+        /// <param name="result">The AsyncResult object</param>
+        void ReadCallback(IAsyncResult result);
+
+        void ReadPacket(SerializeBase packet);
+        TypingVm ViewModel { get; set; }
+        TypingModel Model { get; set; }
+        SerializeBase ReadData { get; set; }
+    }
+
+    public class AsyncTcpClient : IAsyncTcpClient
+    {
+        private readonly TcpClient _tcpClient;
+        // todo burn with fire
+		public TypingVm ViewModel { get; set; }
+        public TypingModel Model { get; set; }
+		public SerializeBase ReadData { get; set; }
 
         /// <summary>
         /// Construct a new client from a provided IP address and port
@@ -33,9 +71,9 @@ namespace MultiType.SocketsAPI
         /// Encodes a serializable object and writes it to the network stream
         /// </summary>
         /// <param name="data">The serializable object to serialize and write</param>
-        internal  void Write(object data)
+        public void Write(object data)
         {
-            byte[] bytes = Serializer.SerializeToByteArray(data);
+            var bytes = Serializer.SerializeToByteArray(data);
             Write(bytes);
         }
 
@@ -43,10 +81,10 @@ namespace MultiType.SocketsAPI
         /// Writes an array of bytes to the network.
         /// </summary>
         /// <param name="bytes">The array to write</param>
-        internal  void Write(byte[] bytes)
+        public void Write(byte[] bytes)
         {
 			if (_tcpClient.Client.Connected == false) return;
-            NetworkStream networkStream = _tcpClient.GetStream();
+            var networkStream = _tcpClient.GetStream();
             //Start async write operation
 			networkStream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
         }
@@ -55,19 +93,19 @@ namespace MultiType.SocketsAPI
         /// Callback for Write operation
         /// </summary>
         /// <param name="result">The AsyncResult object</param>
-        private void WriteCallback(IAsyncResult result)
+        public void WriteCallback(IAsyncResult result)
         {
-            NetworkStream networkStream = _tcpClient.GetStream();
+            var networkStream = _tcpClient.GetStream();
             networkStream.EndWrite(result);
         }
         
 		/// <summary>
 		/// Start read operations
 		/// </summary>
-		internal void BeginReading()
+		public void BeginReading()
 		{
-			NetworkStream networkStream = _tcpClient.GetStream();
-			byte[] buffer = new byte[_tcpClient.ReceiveBufferSize];
+			var networkStream = _tcpClient.GetStream();
+			var buffer = new byte[_tcpClient.ReceiveBufferSize];
 			//Now we are connected start asyn read operation.
 			networkStream.BeginRead(buffer, 0, buffer.Length, ReadCallback, buffer);
 		}
@@ -76,7 +114,7 @@ namespace MultiType.SocketsAPI
         /// Callback for Read operation
         /// </summary>
         /// <param name="result">The AsyncResult object</param>
-        private void ReadCallback(IAsyncResult result)
+        public void ReadCallback(IAsyncResult result)
         {
             int read;
             NetworkStream networkStream;
@@ -95,49 +133,51 @@ namespace MultiType.SocketsAPI
                 return;
             }
  
-            byte[] buffer = result.AsyncState as byte[];
-			readData = Serializer.DeserializeFromByteArray(buffer);
+            var buffer = result.AsyncState as byte[];
+			ReadData = Serializer.DeserializeFromByteArray(buffer);
 			//readData = Serializer.DeserializeFromByteArray(this._encoding.GetString(buffer, 0, read));
             // process the packet
-			if (readData != null) ReadPacket(readData);
+            if (ReadData != null) ReadPacket(ReadData);
             //Then start another async read operation
-			networkStream.BeginRead(buffer, 0, buffer.Length, ReadCallback, buffer);
+            if (buffer != null) 
+                networkStream.BeginRead(buffer, 0, buffer.Length, ReadCallback, buffer);
         }
 
-		private void ReadPacket(SerializeBase packet)
+        public void ReadPacket(SerializeBase packet)
 		{
+            // todo can we replace the fields being checked with the is operator?
 			if (packet.IsUserStatictics)
 			{ // use the data contained in the stats packet to update the peer databound properties in the view model
 				var stats = (UserStatistics)packet;
-				_viewModel.PeerCompletionPercentage = stats.CompletionPercentage;
-				_viewModel.PeerTypedContent = stats.TypedContent;
-				_viewModel.PeerCharactersTyped = stats.CharactersTyped.ToString();
-				_viewModel.PeerAccuracy = stats.Accuracy;
-				_viewModel.PeerErrors = stats.Errors.ToString();
-				_viewModel.PeerWPM = stats.WPM.ToString();
+				ViewModel.PeerCompletionPercentage = stats.CompletionPercentage;
+				ViewModel.PeerTypedContent = stats.TypedContent;
+				ViewModel.PeerCharactersTyped = stats.CharactersTyped.ToString();
+				ViewModel.PeerAccuracy = stats.Accuracy;
+				ViewModel.PeerErrors = stats.Errors.ToString();
+				ViewModel.PeerWPM = stats.WPM.ToString();
 			}
 			else if (packet.IsCommand)
 			{
 				var command = (Command)packet;
 				if (command.IsGameComplete) // alert the model that the game is complete
-					_model.GameIsComplete(isLocalCall:false);
+					Model.GameIsComplete(isLocalCall:false);
 				else if (command.IsPauseCommand)
 				{
-					_model.TogglePauseMulti(false);
-					_viewModel.gameHasStarted = command.GameHasStarted;
+					Model.TogglePauseMulti(false);
+					ViewModel.gameHasStarted = command.GameHasStarted;
 				}
 				else if (command.StartCommand)
-					_model.StartGame(isLocalCall:false); //command.StartTime, command.StopTime);
+					Model.StartGame(isLocalCall:false); //command.StartTime, command.StopTime);
 				else if (command.IsResetCommand && command.ResetIsNewLesson)
 				{
 					//_model.SendStatsPacket();
 					// clear the lesson string and wait until the new lesson string is received from teh server
-					_viewModel.NewLesson(command.LessonText, isLocalCall:false);
+					ViewModel.NewLesson(command.LessonText, isLocalCall:false);
 				}
 				else if (command.IsResetCommand && command.ResetIsRepeatedLesson)
 				{
 					//_model.SendStatsPacket();
-					_viewModel.RepeatLesson(isLocalCall:false);
+					ViewModel.RepeatLesson(isLocalCall:false);
 				}
 			}
 		}

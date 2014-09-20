@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
+using MultiType.Ninject;
+using MultiType.Services;
 using MultiType.ViewModels;
+using Ninject;
+using Ninject.Modules;
 
 namespace MultiType.Windows
 {
@@ -9,13 +14,11 @@ namespace MultiType.Windows
 	/// </summary>
 	public partial class LessonSelect : Window
 	{
-		private readonly LessonVm _viewModel;
 		public LessonSelect(Window owner = null, bool isSinglePlayer = false)
 		{
 		    Owner = owner;
 			InitializeComponent();
-			DataContext = new LessonVm{IsSinglePlayer = isSinglePlayer};
-			_viewModel = (LessonVm)DataContext;
+			DataContext = new LessonVm(new StandardKernel(new NinjectBindings()).Get<ILessonManagementService>()){IsSinglePlayer = isSinglePlayer};
 		}
 
 		private void Cancel_Click(object sender, RoutedEventArgs e)

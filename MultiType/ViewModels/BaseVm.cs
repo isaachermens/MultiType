@@ -3,7 +3,6 @@ using PropertyChanged;
 
 namespace MultiType.ViewModels
 {
-
     [ImplementPropertyChanged]
     public class BaseVm
     {
