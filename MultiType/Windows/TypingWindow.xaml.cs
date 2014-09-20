@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using MultiType.SocketsAPI;
 using MultiType.ViewModels;
 
 namespace MultiType.Windows
@@ -15,39 +16,45 @@ namespace MultiType.Windows
         private TypingVm _viewModel;
 
 		private int _contentLength;
-		private bool _isSinglePlayer;
-		private bool _isServer;
+		private readonly bool _isSinglePlayer;
+		private readonly bool _isServer;
 
-		internal TypingWindow(string lessonString, int racerSpeed)
-		{
-			InitializeComponent();
-			PeerStatsGrid.Visibility = Visibility.Hidden;
-			//adjust the placement of the local stats grid to account for a single player
-			LocalStatsGrid.Margin = new Thickness(LocalStatsGrid.Margin.Left, LocalStatsGrid.Margin.Top+20,
-				LocalStatsGrid.Margin.Right, LocalStatsGrid.Margin.Bottom);
-			_viewModel = new TypingVm(lessonString, UserInput, racerSpeed:racerSpeed);
-			_isSinglePlayer = true;
-			this.DataContext = _viewModel;
-			//_contentLength = 0;
-			UserInput.Focus();
-		}
-
-        internal TypingWindow(SocketsAPI.AsyncTcpClient socket, string lessonString, bool isServer = false)
+        private TypingWindow(string lessonString, int racerSpeed, IAsyncTcpClient socket, bool isServer,
+            PlayerStatsVm remote)
         {
-			InitializeComponent();
-			DataContext = new TypingVm(lessonString, UserInput, socket, isServer );
-			_viewModel = (TypingVm)DataContext;
-			_isSinglePlayer = false;
-			ChangeLesson.Visibility = Visibility.Collapsed;
-			_isServer=isServer;			
+            InitializeComponent();
+            var local = new PlayerStatsVm();
+            LocalStatsGrid.DataContext = local;
+            RemoteStatsGrid.DataContext = remote;
+            _viewModel = new TypingVm(lessonString, UserInput, local, remote, socket, isServer, racerSpeed);
+            DataContext = _viewModel;
+            UserInput.Focus();
+            _isServer = isServer;
         }
 
-		internal void Window_Loaded(object sender, RoutedEventArgs e)
+		public TypingWindow(string lessonString, int racerSpeed) 
+            : this(lessonString, racerSpeed, null, false, null)
+        {
+            //adjust the placement of the local stats grid to account for a single player
+            LocalStatsGrid.Margin = new Thickness(LocalStatsGrid.Margin.Left, LocalStatsGrid.Margin.Top + 20,
+                LocalStatsGrid.Margin.Right, LocalStatsGrid.Margin.Bottom);
+            RemoteStatsGrid.Visibility = Visibility.Hidden;
+            _isSinglePlayer = true;
+		}
+
+        public TypingWindow(string lessonString, IAsyncTcpClient socket, bool isServer = false)
+            : this(lessonString, 0, socket, isServer, new PlayerStatsVm())
+        {
+			_isSinglePlayer = false;
+			ChangeLesson.Visibility = Visibility.Collapsed;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			OpenStartGameDialog();
 		}
 
-        private void Window_KeyDown_1(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Pause)
                 _viewModel.TogglePause();
@@ -70,7 +77,6 @@ namespace MultiType.Windows
 			var scroller = (ScrollViewer)sender;
 			scroller.ScrollToBottom();
 			var offset = scroller.VerticalOffset;
-			var blah = OtherUser;
 			PeerContentScroll.ScrollToVerticalOffset(offset);
 			LessonContentScroll.ScrollToVerticalOffset(offset);
 		}
@@ -80,14 +86,14 @@ namespace MultiType.Windows
 			if (_isSinglePlayer == false) return;
 			var window = new LessonSelect(null, _isSinglePlayer);
 			window.Show();
-			this.Close();
+			Close();
 		}
 
 		private void Menu_Click(object sender, RoutedEventArgs e)
 		{
 			var window = new Menu();
 			window.Show();
-			this.Close();
+			Close();
 		}
 
 		private void PopupOpen_Unchecked(object sender, RoutedEventArgs e)
@@ -99,41 +105,41 @@ namespace MultiType.Windows
 		
 		private void GameComplete_Checked(object sender, RoutedEventArgs e)
 		{
-			var checkbox = (CheckBox)sender;
 			if (_isSinglePlayer || _isServer)
 			{
 				var completeWindow = new LessonComplete();
 				if (completeWindow.ShowDialog() == false)
 				{
 					completeWindow.Close();
-                    App.Current.Shutdown();
+                    Application.Current.Shutdown();
 				}
-				else if (completeWindow.Result == Miscellaneous.DialogResult.Repeat)
+				else switch (completeWindow.Result)
 				{
-					completeWindow.Close();
-					_viewModel.RepeatLesson();
-					OpenStartGameDialog();
-					return;
-				}
-                else if (completeWindow.Result == Miscellaneous.DialogResult.New)
-				{
-					completeWindow.Close();
-					var window = new SimpleLessonSelect();
-					if (window.ShowDialog() == true)
-					{
-						var lessonString = window.LessonString;
-						_viewModel.NewLesson(lessonString);
-						OpenStartGameDialog();
-					}
-					else
-					{
-						// should we notify the peer in this case?
-						var menu = new Menu();
-						menu.Show();
-					}
-					window.Close();
-					//this.Close();
-					return;
+				    case Miscellaneous.DialogResult.Repeat:
+				        completeWindow.Close();
+				        _viewModel.RepeatLesson();
+				        OpenStartGameDialog();
+				        return;
+				    case Miscellaneous.DialogResult.New:
+				    {
+				        completeWindow.Close();
+				        var window = new SimpleLessonSelect();
+				        if (window.ShowDialog() == true)
+				        {
+				            var lessonString = window.LessonString;
+				            _viewModel.NewLesson(lessonString);
+				            OpenStartGameDialog();
+				        }
+				        else
+				        {
+				            // should we notify the peer in this case?
+				            var menu = new Menu();
+				            menu.Show();
+				        }
+				        window.Close();
+				        //this.Close();
+				        return;
+				    }
 				}
 			}
 			else
@@ -155,10 +161,9 @@ namespace MultiType.Windows
 			}
 			else // isServer
 			{
-				string message = "Click OK to start the game.";
-				string caption = "Prompt";
-				MessageBoxButton buttons = MessageBoxButton.OK;
-				if (MessageBox.Show(message, caption, buttons) == MessageBoxResult.OK)
+				const string message = "Click OK to start the game.";
+				const string caption = "Prompt";
+                if (MessageBox.Show(message, caption, MessageBoxButton.OK) == MessageBoxResult.OK)
 				{
 					_viewModel.StartGame();
 				}
@@ -166,7 +171,7 @@ namespace MultiType.Windows
 				{
 					var window = new Menu();
 					window.Show();
-					this.Close();
+					Close();
 				}
 			}
 		}

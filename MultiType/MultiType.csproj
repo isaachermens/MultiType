@@ -115,7 +115,7 @@
     <Compile Include="ViewModels\BaseVm.cs" />
     <Compile Include="ViewModels\HostVm.cs" />
     <Compile Include="ViewModels\MenuVm.cs" />
-    <Compile Include="ViewModels\LiveStatsVm.cs" />
+    <Compile Include="ViewModels\PlayerStatsVm.cs" />
     <Compile Include="Windows\HostWindow.xaml.cs">
       <DependentUpon>HostWindow.xaml</DependentUpon>
     </Compile>
