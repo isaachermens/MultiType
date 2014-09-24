@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiType", "MultiType\Mult
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{72AF219A-4279-42A4-A9CE-22378B4926A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiType.Test", "MultiType.Test\MultiType.Test.csproj", "{32885B97-F391-4A06-866C-77690B588D7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{F5AA3869-EFDA-4963-AC2A-10BC14BFA7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5AA3869-EFDA-4963-AC2A-10BC14BFA7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5AA3869-EFDA-4963-AC2A-10BC14BFA7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32885B97-F391-4A06-866C-77690B588D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32885B97-F391-4A06-866C-77690B588D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32885B97-F391-4A06-866C-77690B588D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32885B97-F391-4A06-866C-77690B588D7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
